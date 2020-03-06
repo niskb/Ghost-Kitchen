@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavbar from './AppNavbar';
 
-class GroupEdit extends Component {
+class RestaurantEdit extends Component {
 
     emptyItem = {
         name: '',
@@ -25,8 +25,8 @@ class GroupEdit extends Component {
 
     async componentDidMount() {
         if (this.props.match.params.id !== 'new') {
-            const group = await (await fetch(`/api/group/${this.props.match.params.id}`)).json();
-            this.setState({ item: group });
+            const restaurant = await (await fetch(`/api/restaurant/${this.props.match.params.id}`)).json();
+            this.setState({ item: restaurant });
         }
     }
 
@@ -43,7 +43,7 @@ class GroupEdit extends Component {
         event.preventDefault();
         const { item } = this.state;
 
-        await fetch('/api/group', {
+        await fetch('/api/restaurant', {
             method: (item.id) ? 'PUT' : 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -51,7 +51,7 @@ class GroupEdit extends Component {
             },
             body: JSON.stringify(item),
         });
-        this.props.history.push('/groups');
+        this.props.history.push('/restaurants');
     }
 
     render() {
@@ -97,7 +97,7 @@ class GroupEdit extends Component {
                     </div>
                     <FormGroup>
                         <Button color="primary" type="submit">Save</Button>{' '}
-                        <Button color="secondary" tag={Link} to="/groups">Cancel</Button>
+                        <Button color="secondary" tag={Link} to="/restaurants">Cancel</Button>
                     </FormGroup>
                 </Form>
             </Container>
@@ -105,4 +105,4 @@ class GroupEdit extends Component {
     }
 }
 
-export default withRouter(GroupEdit);
+export default withRouter(RestaurantEdit);

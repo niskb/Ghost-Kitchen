@@ -13,7 +13,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "user_group")
-public class Group {
+public class Restaurant {
 
     @Id
     @GeneratedValue

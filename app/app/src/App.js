@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import Home from './Home';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import GroupList from './GroupList';
-import GroupEdit from './GroupEdit';
+import RestaurantList from './RestaurantList';
+import RestaurantEdit from './RestaurantEdit';
 
 class App extends Component {
     render() {
@@ -11,8 +11,8 @@ class App extends Component {
             <Router>
                 <Switch>
                     <Route path='/' exact={true} component={Home} />
-                    <Route path='/groups' exact={true} component={GroupList} />
-                    <Route path='/groups/:id' component={GroupEdit} />
+                    <Route path='/restaurants' exact={true} component={RestaurantList} />
+                    <Route path='/restaurants/:id' component={RestaurantEdit} />
                 </Switch>
             </Router>
         )
