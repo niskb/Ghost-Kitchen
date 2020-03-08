@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, ButtonGroup, Container, Table } from 'reactstrap';
+import { Button, ButtonGroup, Container, Table, Collapse, Nav, Navbar, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import AppNavbar from './AppNavbar';
 import { Link } from 'react-router-dom';
 
@@ -40,23 +40,32 @@ class RestaurantList extends Component {
     }
 
       const restaurantList = restaurants.map(restaurant => {
-          const address = `${restaurant.address || ''} ${restaurant.city || ''} ${restaurant.stateOrProvince || ''}`;
+          var menuSearchURL = "https://www.google.com/search?q=" + restaurant.name + " menu";
+          const address = `${restaurant.address || ''} ${restaurant.city || ''} ${restaurant.stateOrProvince || ''} ${restaurant.country || ''} ${restaurant.postalCode || ''}`;
+          const phoneNumber = `${restaurant.phoneNumber}`;
           return <tr key={restaurant.id}>
         <td style={{whiteSpace: 'nowrap'}}>{restaurant.name}</td>
         <td>{address}</td>
-        <td>{restaurant.events.map(event => {
-          return <div key={event.id}>{new Intl.DateTimeFormat('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: '2-digit'
-          }).format(new Date(event.date))}: {event.title}</div>
-        })}</td>
+        <td>{phoneNumber}</td>
         <td>
           <ButtonGroup>
             <Button size="sm" color="primary" tag={Link} to={"/restaurants/" + restaurant.id}>Edit</Button>
             <Button size="sm" color="danger" onClick={() => this.remove(restaurant.id)}>Delete</Button>
           </ButtonGroup>
-        </td>
+          </td>
+              <td>
+                  <Navbar expand="md">
+                      <NavbarToggler onClick={this.toggle} />
+                      <Collapse isOpen={this.state.isOpen} navbar>
+                          <Nav className="ml-auto" navbar>
+                              <NavItem>
+                                  <NavLink
+                                      href={menuSearchURL}>Search for Menu</NavLink>
+                              </NavItem>
+                          </Nav>
+                      </Collapse>
+                  </Navbar>
+          </td>
       </tr>
     });
 
@@ -71,10 +80,11 @@ class RestaurantList extends Component {
           <Table className="mt-4">
             <thead>
             <tr>
-              <th width="20%">Name</th>
-              <th width="20%">Location</th>
-              <th>Events</th>
-              <th width="10%">Actions</th>
+              <th width="25%">Name</th>
+              <th width="25%">Location</th>
+              <th width="25%">Phone Number</th>
+              <th width="15%">Actions</th>
+              <th width="5%">Menu Search</th>
             </tr>
             </thead>
             <tbody>

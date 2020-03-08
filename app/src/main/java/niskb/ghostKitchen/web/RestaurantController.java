@@ -26,35 +26,28 @@ public class RestaurantController {
     }
 
     @GetMapping("/restaurants")
-    Collection<Restaurant> groups() {
+    Collection<Restaurant> restaurants() {
         return restaurantRepository.findAll();
     }
 
     @GetMapping("/restaurant/{id}")
-    ResponseEntity<?> getGroup(@PathVariable Long id) {
-        Optional<Restaurant> group = restaurantRepository.findById(id);
-        return group.map(response -> ResponseEntity.ok().body(response))
+    ResponseEntity<?> getRestaurant(@PathVariable Long id) {
+        Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+        return restaurant.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/restaurant")
-    ResponseEntity<Restaurant> createGroup(@Valid @RequestBody Restaurant restaurant) throws URISyntaxException {
-        log.info("Request to create restaurant: {}", restaurant);
+    ResponseEntity<Restaurant> createRestaurant(@Valid @RequestBody Restaurant restaurant) throws URISyntaxException {
+        log.info("REQUEST TO *CREATE* RESTAURANT: {}", restaurant);
         Restaurant result = restaurantRepository.save(restaurant);
-        return ResponseEntity.created(new URI("/api/group/" + result.getId()))
+        return ResponseEntity.created(new URI("/api/restaurant/" + result.getId()))
                 .body(result);
     }
 
-    @PutMapping("/restaurant/{id}")
-    ResponseEntity<Restaurant> updateGroup(@Valid @RequestBody Restaurant restaurant) {
-        log.info("Request to update restaurant: {}", restaurant);
-        Restaurant result = restaurantRepository.save(restaurant);
-        return ResponseEntity.ok().body(result);
-    }
-
     @DeleteMapping("/restaurant/{id}")
-    public ResponseEntity<?> deleteGroup(@PathVariable Long id) {
-        log.info("Request to delete restaurant: {}", id);
+    public ResponseEntity<?> deleteRestaurant(@PathVariable Long id) {
+        log.info("REQUEST TO *DELETE* RESTAURANT: {}", id);
         restaurantRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }

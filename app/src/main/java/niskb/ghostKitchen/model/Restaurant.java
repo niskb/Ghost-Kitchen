@@ -6,13 +6,12 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
-@Table(name = "user_group")
+@Table(name = "user_restaurant")
 public class Restaurant {
 
     @Id
@@ -20,14 +19,10 @@ public class Restaurant {
     private Long id;
     @NonNull
     private String name;
-    private String address;
-    private String city;
-    private String stateOrProvince;
-    private String country;
-    private String postalCode;
-    @ManyToOne(cascade=CascadeType.PERSIST)
-    private User user;
-
-    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    private Set<Event> events;
+    private String address = "";
+    private String city = "";
+    private String stateOrProvince = "";
+    private String country = "";
+    private String postalCode = "";
+    private String phoneNumber = "";
 }
