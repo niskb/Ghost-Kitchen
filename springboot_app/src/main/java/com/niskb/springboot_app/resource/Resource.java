@@ -13,15 +13,15 @@ public interface Resource<T> {
     ResponseEntity<Collection<T>> findAll();
 
     @GetMapping("/{id}")
-    ResponseEntity<T> findRecipeById(@PathVariable Long id);
+    ResponseEntity<T> findById(@PathVariable Long id);
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<T> saveRecipe(@RequestBody T t);
+    ResponseEntity<T> save(@RequestBody T t);
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<T> updateRecipe(@RequestBody T t);
+    ResponseEntity<T> update(@RequestBody T t);
 
     @DeleteMapping("/{id}")
-    ResponseEntity<T> deleteRecipeById(@PathVariable Long id);
+    ResponseEntity<T> deleteById(@PathVariable Long id);
 
 }

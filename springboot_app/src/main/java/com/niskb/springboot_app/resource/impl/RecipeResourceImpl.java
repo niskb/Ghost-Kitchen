@@ -24,22 +24,22 @@ public class RecipeResourceImpl implements Resource<Recipe> {
     }
 
     @Override
-    public ResponseEntity<Recipe> findRecipeById(Long id) {
+    public ResponseEntity<Recipe> findById(Long id) {
         return new ResponseEntity<>(recipeService.findRecipeById(id), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Recipe> saveRecipe(Recipe recipe) {
+    public ResponseEntity<Recipe> save(Recipe recipe) {
         return new ResponseEntity<>(recipeService.saveRecipe(recipe), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Recipe> updateRecipe(Recipe recipe) {
+    public ResponseEntity<Recipe> update(Recipe recipe) {
         return new ResponseEntity<>(recipeService.updateRecipe(recipe), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Recipe> deleteRecipeById(Long id) {
+    public ResponseEntity<Recipe> deleteById(Long id) {
         return new ResponseEntity<>(recipeService.deleteRecipeById(id), HttpStatus.OK);
     }
 }
