@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Card, Form, Button, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faPlusSquare, faUndo, faList } from '@fortawesome/free-solid-svg-icons'
+import { faSave, faPlusSquare, faUndo, faList, faEdit } from '@fortawesome/free-solid-svg-icons'
 import MyToast from './MyToast';
 import axios from 'axios';
 
@@ -17,12 +17,60 @@ export default class Recipe extends Component {
     }
 
     initialState = {
-        title: '', href: '', ingredients: '', thumbnail: '', price: ''
+        id: '', title: '', href: '', ingredients: '', thumbnail: '', price: ''
+    };
+
+    componentDidMount() {
+        const recipeId = +this.props.match.params.id;
+        if (recipeId) {
+            this.findRecipeById(recipeId);
+        }
+    }
+
+    findRecipeById = (recipeId) => {
+        axios.get("http://localhost:8080/rest/recipes/" + recipeId)
+            .then(response => {
+                if (response.data != null) {
+                    this.setState({
+                        id: response.data.id,
+                        title: response.data.title,
+                        href: response.data.href,
+                        ingredients: response.data.ingredients,
+                        thumbnail: response.data.thumbnail,
+                        price: response.data.price
+                    });
+                }
+            }).catch((error) => {
+                console.error("Error - " + error);
+            });
     }
 
     resetRecipe = () => {
         this.setState(() => this.initialState);
-    }
+    };
+
+    updateRecipe = event => {
+        event.preventDefault();
+        const recipe = {
+            id: this.state.id,
+            title: this.state.title,
+            href: this.state.href,
+            ingredients: this.state.ingredients,
+            thumbnail: this.state.thumbnail,
+            price: this.state.price
+        };
+        axios.put("http://localhost:8080/rest/recipes", recipe)
+            .then(response => {
+                if (response.data != null) {
+                    this.setState({ "show": true, "method":"put" });
+                    setTimeout(() => this.setState({ "show": false }), 3000);
+                    setTimeout(() => this.recipeList(), 3000);
+                } else {
+                    this.setState({ "show": false });
+                }
+            });
+        this.setState(this.initialState);
+    };
 
     submitRecipe = event => {
         event.preventDefault();
@@ -36,14 +84,14 @@ export default class Recipe extends Component {
         axios.post("http://localhost:8080/rest/recipes", recipe)
             .then(response => {
                 if (response.data != null) {
-                    this.setState({ "show": true });
+                    this.setState({ "show": true, "method": "post" });
                     setTimeout(() => this.setState({ "show": false }), 3000);
                 } else {
                     this.setState({ "show": false });
                 }
             });
         this.setState(this.initialState);
-    }
+    };
 
     recipeChange = event => {
         this.setState({
@@ -60,11 +108,11 @@ export default class Recipe extends Component {
         return (
             <div>
                 <div style={{"display":this.state.show ? "block" : "none"}}>
-                    <MyToast show={this.state.show} message={"Recipe Saved Successfully."} type={"success"}/>
+                    <MyToast show={this.state.show} message={this.state.method === "put" ? "Recipe Updated Successfully." : "Recipe Saved Successfully."} type={"success"}/>
                 </div>
                     <Card className={"border border-dark bg-dark text-white"}>
-                        <Card.Header><FontAwesomeIcon icon={faPlusSquare} /> Add New Recipe</Card.Header>
-                        <Form onReset={this.resetRecipe} onSubmit={this.submitRecipe} id="recipeFormId">
+                    <Card.Header><FontAwesomeIcon icon={this.state.id ? faEdit : faPlusSquare } />{this.state.id ? " Update Recipe" : " Add New Recipe"}</Card.Header>
+                    <Form onReset={this.resetRecipe} onSubmit={this.state.id ? this.updateRecipe : this.submitRecipe} id="recipeFormId">
                             <Card.Body>
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="formGridTitle">
@@ -98,7 +146,7 @@ export default class Recipe extends Component {
                                 </Form.Row>
                             </Card.Body>
                             <Card.Footer style={{ "textAlign": "right" }}>
-                            <Button size="sm" variant="success" type="submit"><FontAwesomeIcon icon={faSave} /> Submit
+                            <Button size="sm" variant="success" type="submit"><FontAwesomeIcon icon={faSave} />{this.state.id ? " Update" : " Save"}
                                 </Button>{' '}
                             <Button size="sm" variant="info" type="reset">
                                 <FontAwesomeIcon icon={faUndo} /> Reset
