@@ -1,19 +1,19 @@
-#GET
-GET - http://localhost:8080/rest/recipes
-
-#GET BY ID
-GET BY ID - http://localhost:8080/rest/recipes/{id}
-
-#POST
+# GET
 http://localhost:8080/rest/recipes
 
-#PUT
+# GET BY ID
+http://localhost:8080/rest/recipes/{id}
+
+# POST
 http://localhost:8080/rest/recipes
 
-DELETE BY ID - http://localhost:8080/rest/recipes/{id}
+# PUT
+http://localhost:8080/rest/recipes
 
-======================================================
-#Requests
+# DELETE BY ID
+http://localhost:8080/rest/recipes/{id}
+
+# Requests
 
 {
 "id": 69,
