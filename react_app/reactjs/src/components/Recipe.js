@@ -60,7 +60,7 @@ export default class Recipe extends Component {
         return (
             <div>
                 <div style={{"display":this.state.show ? "block" : "none"}}>
-                    <MyToast children={{ show: this.state.show, message: "Recipe Saved Successfully."}}/>
+                    <MyToast children={{ show: this.state.show, message: "Recipe Saved Successfully.", type: "success"}}/>
                 </div>
                     <Card className={"border border-dark bg-dark text-white"}>
                         <Card.Header><FontAwesomeIcon icon={faPlusSquare} /> Add New Recipe</Card.Header>
