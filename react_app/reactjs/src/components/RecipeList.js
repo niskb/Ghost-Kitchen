@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { Card, Table, Nav, NavItem, NavLink, Image, Button, ButtonGroup } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faList, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 import MyToast from './MyToast';
@@ -47,7 +48,7 @@ export default class RecipeList extends Component {
         return (
             <div>
                 <div style={{ "display": this.state.show ? "block" : "none" }}>
-                    <MyToast children={{ show: this.state.show, message: "Recipe Deleted Successfully.", type: "danger"}} />
+                    <MyToast show={this.state.show} message={"Recipe Deleted Successfully."} type={"danger"} />
                 </div>
                 <Card className={"border border-dark bg-dark text-white"}>
                     <Card.Header><FontAwesomeIcon icon={faList} /> Recipe List</Card.Header>
@@ -89,9 +90,7 @@ export default class RecipeList extends Component {
                                                     <td>{recipe.price}</td>
                                                     <td>
                                                         <ButtonGroup>
-                                                            <Button variant="warning">
-                                                                <FontAwesomeIcon icon={faEdit} />
-                                                            </Button>
+                                                            <Link to={"edit/" + recipe.id} className="btn btn-warning"><FontAwesomeIcon icon={faEdit} /></Link>{' '}
                                                             <Button variant="danger" onClick={this.deleteRecipe.bind(this, recipe.id)}>
                                                                 <FontAwesomeIcon icon={faTrash} />
                                                             </Button>

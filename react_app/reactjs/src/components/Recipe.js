@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Card, Form, Button, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faPlusSquare, faUndo } from '@fortawesome/free-solid-svg-icons'
+import { faSave, faPlusSquare, faUndo, faList } from '@fortawesome/free-solid-svg-icons'
 import MyToast from './MyToast';
 import axios from 'axios';
 
@@ -26,7 +26,6 @@ export default class Recipe extends Component {
 
     submitRecipe = event => {
         event.preventDefault();
-
         const recipe = {
             title: this.state.title,
             href: this.state.href,
@@ -34,7 +33,6 @@ export default class Recipe extends Component {
             thumbnail: this.state.thumbnail,
             price: this.state.price
         };
-
         axios.post("http://localhost:8080/rest/recipes", recipe)
             .then(response => {
                 if (response.data != null) {
@@ -44,23 +42,25 @@ export default class Recipe extends Component {
                     this.setState({ "show": false });
                 }
             });
-
         this.setState(this.initialState);
-
     }
 
     recipeChange = event => {
         this.setState({
-            [event.target.name]:event.target.value
+            [event.target.name]: event.target.value
         });
-    }
+    };
+
+    recipeList = () => {
+        return this.props.history.push("/list");
+    };
 
     render() {
         const { title, href, ingredients, thumbnail, price } = this.state;
         return (
             <div>
                 <div style={{"display":this.state.show ? "block" : "none"}}>
-                    <MyToast children={{ show: this.state.show, message: "Recipe Saved Successfully.", type: "success"}}/>
+                    <MyToast show={this.state.show} message={"Recipe Saved Successfully."} type={"success"}/>
                 </div>
                     <Card className={"border border-dark bg-dark text-white"}>
                         <Card.Header><FontAwesomeIcon icon={faPlusSquare} /> Add New Recipe</Card.Header>
@@ -98,9 +98,14 @@ export default class Recipe extends Component {
                                 </Form.Row>
                             </Card.Body>
                             <Card.Footer style={{ "textAlign": "right" }}>
-                                <Button size="sm" variant="success" type="submit"><FontAwesomeIcon icon={faSave} /> Submit</Button>
-                                {' '}
-                                <Button size="sm" variant="info" type="reset"><FontAwesomeIcon icon={faUndo} /> Reset</Button>
+                            <Button size="sm" variant="success" type="submit"><FontAwesomeIcon icon={faSave} /> Submit
+                                </Button>{' '}
+                            <Button size="sm" variant="info" type="reset">
+                                <FontAwesomeIcon icon={faUndo} /> Reset
+                                </Button>{' '}
+                            <Button size="sm" variant="info" type="button" onClick={this.recipeList.bind()}>
+                                <FontAwesomeIcon icon={faList} /> Recipe List
+                                </Button>
                             </Card.Footer>
                         </Form>
                     </Card>
