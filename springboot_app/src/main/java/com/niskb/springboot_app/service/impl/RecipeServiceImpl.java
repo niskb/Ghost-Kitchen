@@ -17,7 +17,6 @@ public class RecipeServiceImpl implements RecipeService {
     private Long recipeId = 1L;
     private Map<Long, Recipe> recipeMap = new HashMap<Long, Recipe>();
 
-
     {
         RecipeBag recipeBag = Loader.loadRecipes();
         for(int i = 0; i < 1000; i++) {
