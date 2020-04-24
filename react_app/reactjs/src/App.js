@@ -8,6 +8,7 @@ import NavigationBar from './components/NavigationBar';
 import Welcome from './components/Welcome';
 import Recipe from './components/Recipe';
 import RecipeList from './components/RecipeList';
+import UserList from './components/UserList';
 import Footer from './components/Footer';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                           <Route path="/add" exact component={Recipe} />
                           <Route path="/edit/:id" exact component={Recipe} />
                           <Route path="/list" exact component={RecipeList} />
+                          <Route path="/users" exact component={UserList} />
                       </Switch>
                   </Col>
               </Row>
