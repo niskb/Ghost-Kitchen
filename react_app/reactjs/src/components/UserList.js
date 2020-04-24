@@ -14,7 +14,7 @@ export default class UserList extends Component {
         this.state = {
             users: [],
             currentPage: 1,
-            usersPerPage: 10
+            usersPerPage: 15
         };
     }
 
@@ -86,12 +86,11 @@ export default class UserList extends Component {
                                 <td>Email</td>
                                 <td>Address</td>
                                 <td>Created</td>
-                                <td>Balance</td>
                             </thead>
                             <tbody>
                                 {users.length === 0 ?
                                     <tr align="center">
-                                        <td colSpan="6">No Users Available</td>
+                                        <td colSpan="4">No Users Available</td>
                                     </tr> :
                                     currentUsers.map((user, index) => (
                                         <tr key={index}>
@@ -99,7 +98,6 @@ export default class UserList extends Component {
                                             <td>{user.email}</td>
                                             <td>{user.address}</td>
                                             <td>{user.created}</td>
-                                            <td>{user.balance}</td>
                                         </tr>
                                     ))
                                 }

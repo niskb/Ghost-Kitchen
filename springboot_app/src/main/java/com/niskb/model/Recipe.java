@@ -1,6 +1,8 @@
 package com.niskb.model;
 
-public class Recipe {
+import java.io.Serializable;
+
+public class Recipe implements Serializable {
 
     private Long id;
     private String title;
@@ -8,6 +10,7 @@ public class Recipe {
     private String ingredients = "";
     private String thumbnail = "";
     private String price = "";
+    private String isSuggested = "";
     private static Long idCounter = 1L;
 
     @Override
@@ -61,6 +64,14 @@ public class Recipe {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getIsSuggested() {
+        return this.isSuggested;
+    }
+
+    public String setIsSuggested(String isSuggested) {
+        return this.isSuggested = isSuggested;
     }
 
 }

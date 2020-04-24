@@ -16,7 +16,7 @@ export default class Recipe extends Component {
     }
 
     initialState = {
-        id: '', title: '', href: '', ingredients: '', thumbnail: '', price: ''
+        id: '', title: '', href: '', ingredients: '', thumbnail: '', price: '', isSuggested: ''
     };
 
     componentDidMount() {
@@ -37,7 +37,8 @@ export default class Recipe extends Component {
                         href: recipe.href,
                         ingredients: recipe.ingredients,
                         thumbnail: recipe.thumbnail,
-                        price: recipe.price
+                        price: recipe.price,
+                        isSuggested: recipe.isSuggested
                     });
                 }
             }).catch((error) => {
@@ -57,7 +58,8 @@ export default class Recipe extends Component {
             href: this.state.href,
             ingredients: this.state.ingredients,
             thumbnail: this.state.thumbnail,
-            price: this.state.price
+            price: this.state.price,
+            isSuggested: "true"
         };
 
         const headers = new Headers();
@@ -88,7 +90,8 @@ export default class Recipe extends Component {
                 href: this.state.href,
                 ingredients: this.state.ingredients,
                 thumbnail: this.state.thumbnail,
-                price: this.state.price
+                price: this.state.price,
+                isSuggested: "true"
             };
 
             const headers = new Headers();
@@ -126,40 +129,40 @@ export default class Recipe extends Component {
         return (
             <div>
                 <div style={{"display":this.state.show ? "block" : "none"}}>
-                    <MyToast show={this.state.show} message={this.state.method === "put" ? "Recipe Updated Successfully." : "Recipe Saved Successfully."} type={"success"}/>
+                    <MyToast show={this.state.show} message={this.state.method === "put" ? "Meal Updated Successfully." : "Meal Saved Successfully."} type={"success"}/>
                 </div>
                     <Card className={"border border-dark bg-dark text-white"}>
-                    <Card.Header><FontAwesomeIcon icon={this.state.id ? faEdit : faPlusSquare } />{this.state.id ? " Update Recipe" : " Add New Recipe"}</Card.Header>
+                    <Card.Header><FontAwesomeIcon icon={this.state.id ? faEdit : faPlusSquare } />{this.state.id ? " Update Meal" : " Suggest New Meal"}</Card.Header>
                     <Form onReset={this.resetRecipe} onSubmit={this.state.id ? this.updateRecipe : this.submitRecipe} id="recipeFormId">
                             <Card.Body>
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="formGridTitle">
                                         <Form.Label>Title</Form.Label>
-                                        <Form.Control required autoComplete="off" type="text" name="title" value={title} onChange={this.recipeChange} className={"bg-dark text-white"} placeholder="Enter Recipe Title" />
+                                        <Form.Control required autoComplete="off" type="text" name="title" value={title} onChange={this.recipeChange} className={"bg-dark text-white"} placeholder="Enter Meal Title" />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridHREF">
                                         <Form.Label>HREF</Form.Label>
-                                        <Form.Control required autoComplete="off" type="text" name="href" value={href} onChange={this.recipeChange} className={"bg-dark text-white"} placeholder="Enter Recipe HREF" />
+                                        <Form.Control required autoComplete="off" type="text" name="href" value={href} onChange={this.recipeChange} className={"bg-dark text-white"} placeholder="Enter Meal HREF" />
                                     </Form.Group>
                                 </Form.Row>
 
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="formGridPrice">
                                         <Form.Label>Price</Form.Label>
-                                        <Form.Control required autoComplete="off" type="text" name="price" value={price} onChange={this.recipeChange} className={"bg-dark text-white"} placeholder="Enter Recipe Price $" />
+                                        <Form.Control required autoComplete="off" type="text" name="price" value={price} onChange={this.recipeChange} className={"bg-dark text-white"} placeholder="Enter Meal Price $" />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridThumbnail">
                                         <Form.Label>Thumbnail URL</Form.Label>
-                                        <Form.Control required autoComplete="off" type="text" name="thumbnail" value={thumbnail} onChange={this.recipeChange} className={"bg-dark text-white"} placeholder="Enter Recipe Thumbnail" />
+                                        <Form.Control required autoComplete="off" type="text" name="thumbnail" value={thumbnail} onChange={this.recipeChange} className={"bg-dark text-white"} placeholder="Enter Meal Thumbnail" />
                                     </Form.Group>
                                 </Form.Row>
 
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="formGridIngredients">
                                         <Form.Label>Ingredients</Form.Label>
-                                        <Form.Control required autoComplete="off" type="text" name="ingredients" value={ingredients} onChange={this.recipeChange} className={"bg-dark text-white"} placeholder="Enter Recipe Ingredients" />
+                                        <Form.Control required autoComplete="off" type="text" name="ingredients" value={ingredients} onChange={this.recipeChange} className={"bg-dark text-white"} placeholder="Enter Meal Ingredients" />
                                     </Form.Group>
                                 </Form.Row>
                             </Card.Body>
@@ -170,7 +173,7 @@ export default class Recipe extends Component {
                                 <FontAwesomeIcon icon={faUndo} /> Reset
                                 </Button>{' '}
                             <Button size="sm" variant="info" type="button" onClick={this.recipeList.bind()}>
-                                <FontAwesomeIcon icon={faList} /> Recipe List
+                                <FontAwesomeIcon icon={faList} /> Meal List
                                 </Button>
                             </Card.Footer>
                         </Form>

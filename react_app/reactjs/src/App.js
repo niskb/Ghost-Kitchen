@@ -13,8 +13,8 @@ import Footer from './components/Footer';
 
 export default function App() {
 
-    const heading = "Welcome to the Ghost Kitchen!";
-    const desc = "Ghost Kitchen project using Spring Boot and React!";
+    const heading = "Welcome to my Ghost Kitchen project!";
+    const desc = "Ghost Kitchen project using React and Spring Boot!";
     const name = "Brian Niski";
 
   return (

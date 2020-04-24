@@ -27,6 +27,7 @@ public class RecipeServiceImpl implements RecipeService {
             recipe.setThumbnail(recipeBag.getRecipe(i).getThumbnail());
             recipe.setPrice(recipeBag.getRecipe(i).getPrice());
             recipe.setId(recipeId++);
+            recipe.setIsSuggested("false");
             System.out.println("PUTTING NEW RECIPE IN, Recipe Id: " + recipe.getId());
             recipeMap.put(recipe.getId(), recipe);
         }

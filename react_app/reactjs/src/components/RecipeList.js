@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Card, Table, Nav, NavItem, NavLink, Image, Button, ButtonGroup, InputGroup, FormControl } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faList, faEdit, faTrash, faFastBackward, faStepBackward, faStepForward, faFastForward, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faList, faEdit, faTrash, faFastBackward, faStepBackward, faStepForward, faFastForward, faSearch, faTimes, faEquals, faNotEqual } from '@fortawesome/free-solid-svg-icons'
 import MyToast from './MyToast';
 import './Style.css';
 import axios from 'axios';
@@ -17,7 +17,7 @@ export default class RecipeList extends Component {
             recipes: [],
             search: '',
             currentPage: 1,
-            recipesPerPage: 10
+            recipesPerPage: 8
         };
     }
 
@@ -116,11 +116,11 @@ export default class RecipeList extends Component {
     };
 
     searchData = (currentPage) => {
-        this.state.currentPage = 1;
+        this.setState({ currentPage: 1 })
         axios.get("http://localhost:8080/rest/recipes")
             .then(response => response.data)
             .then((data) => {
-                const filteredRecipes = data.filter(recipe => recipe.ingredients.toLowerCase().includes(this.state.search.toLowerCase())); /*omg, the filter works*/
+                const filteredRecipes = data.filter(recipe => recipe.ingredients.toLowerCase().includes(this.state.search.toLowerCase()));
                 this.setState({ recipes: filteredRecipes });
             });
     };
@@ -135,16 +135,16 @@ export default class RecipeList extends Component {
         return (
             <div>
                 <div style={{ "display": this.state.show ? "block" : "none" }}>
-                    <MyToast show={this.state.show} message={"Recipe Deleted Successfully."} type={"danger"} />
+                    <MyToast show={this.state.show} message={"Meal Deleted Successfully."} type={"danger"} />
                 </div>
                 <Card className={"border border-dark bg-dark text-white"}>
                     <Card.Header>
                         <div style={{"float":"left"}}>
-                            <FontAwesomeIcon icon={faList} /> Recipe List
+                            <FontAwesomeIcon icon={faList} /> Meal List
                         </div>
                         <div style={{ "float": "right" }}>
                             <InputGroup size="sm">
-                                <FormControl placeHolder="Search" name="search" value={search} className={"info-border bg-dark text-white"}
+                                <FormControl placeHolder="Search By Ingredient" name="search" value={search} className={"info-border bg-dark text-white"}
                                     onChange={this.searchChange}/>
                                 <InputGroup.Append>
                                     <Button size="sm" variant="outline-info" type="button" onClick={this.searchData}>
@@ -167,12 +167,13 @@ export default class RecipeList extends Component {
                                     <th>Ingredients</th>
                                     <th>Thumbnail</th>
                                     <th>Price ($)</th>
-                                    <th>Edit</th>
+                                    <th>Edit Meal</th>
+                                    <th>Is this meal Suggested?</th>
                                 </tr>
                             </thead>
                             <tbody>
                                     {this.state.recipes.length === 0 ?
-                                        <td colSpan="7">{this.state.recipes.length} Recipes Available</td> :
+                                        <td colSpan="8">{this.state.recipes.length} Meals Available</td> :
                                         currentRecipes.map((recipe) => (
                                             <tr key={recipe.id}>
                                                 <td>{recipe.id}</td>
@@ -197,12 +198,18 @@ export default class RecipeList extends Component {
                                                     {recipe.price}
                                                 </td>
                                                 <td>
+
                                                     <ButtonGroup>
                                                         <Link to={"edit/" + recipe.id} className="btn btn-warning"><FontAwesomeIcon icon={faEdit} /></Link>{' '}
                                                         <Button variant="danger" onClick={this.deleteRecipe.bind(this, recipe.id)}>
                                                             <FontAwesomeIcon icon={faTrash} />
                                                         </Button>
                                                     </ButtonGroup>
+
+                                                </td>
+                                                <td align="center">
+                                                    <b>{recipe.isSuggested.includes("true") ? <FontAwesomeIcon icon={faEquals} /> : <FontAwesomeIcon icon={faNotEqual} /> }</b>
+                                                    
                                                 </td>
                                             </tr>
                                             ))
