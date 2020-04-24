@@ -3,8 +3,9 @@ import React, { Component } from 'react';
 import { Card, Table, Nav, NavItem, NavLink, Image, Button, ButtonGroup, InputGroup, FormControl } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faList, faEdit, faTrash, faFastBackward, faStepBackward, faStepForward, faFastForward } from '@fortawesome/free-solid-svg-icons'
+import { faList, faEdit, faTrash, faFastBackward, faStepBackward, faStepForward, faFastForward, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
 import MyToast from './MyToast';
+import './Style.css';
 import axios from 'axios';
 
 export default class RecipeList extends Component {
@@ -14,6 +15,7 @@ export default class RecipeList extends Component {
 
         this.state = {
             recipes: [],
+            search: '',
             currentPage: 1,
             recipesPerPage: 10
         };
@@ -102,20 +104,33 @@ export default class RecipeList extends Component {
         }
     };
 
+    searchChange = event => {
+        this.setState({
+            [event.target.name] : event.target.value
+        });
+    };
+
+    cancelSearch = () => {
+        this.setState({ "search": '' });
+        this.findAllRecipes(this.state.currentPage);
+    };
+
+    searchData = (currentPage) => {
+        this.state.currentPage = 1;
+        axios.get("http://localhost:8080/rest/recipes")
+            .then(response => response.data)
+            .then((data) => {
+                const filteredRecipes = data.filter(recipe => recipe.ingredients.toLowerCase().includes(this.state.search.toLowerCase())); /*omg, the filter works*/
+                this.setState({ recipes: filteredRecipes });
+            });
+    };
+
     render() {
-        const { recipes, currentPage, recipesPerPage } = this.state
+        const { recipes, currentPage, recipesPerPage, search } = this.state
         const lastIndex = currentPage * recipesPerPage;
         const firstIndex = lastIndex - recipesPerPage;
         const currentRecipes = recipes.slice(firstIndex, lastIndex);
-        const totalPages = recipes.length / recipesPerPage;
-
-        const pageNumCss = {
-            width: "45px",
-            border: "1px solid #17A2B8",
-            color: "#17A2B8",
-            textAlign: "center",
-            fontWeight: "bold"
-        };
+        const totalPages = Math.ceil(recipes.length / recipesPerPage);
 
         return (
             <div>
@@ -123,7 +138,25 @@ export default class RecipeList extends Component {
                     <MyToast show={this.state.show} message={"Recipe Deleted Successfully."} type={"danger"} />
                 </div>
                 <Card className={"border border-dark bg-dark text-white"}>
-                    <Card.Header><FontAwesomeIcon icon={faList} /> Recipe List</Card.Header>
+                    <Card.Header>
+                        <div style={{"float":"left"}}>
+                            <FontAwesomeIcon icon={faList} /> Recipe List
+                        </div>
+                        <div style={{ "float": "right" }}>
+                            <InputGroup size="sm">
+                                <FormControl placeHolder="Search" name="search" value={search} className={"info-border bg-dark text-white"}
+                                    onChange={this.searchChange}/>
+                                <InputGroup.Append>
+                                    <Button size="sm" variant="outline-info" type="button" onClick={this.searchData}>
+                                        <FontAwesomeIcon icon={faSearch}/>
+                                    </Button>
+                                    <Button size="sm" variant="outline-danger" type="button" onClick={this.cancelSearch}>
+                                        <FontAwesomeIcon icon={faTimes} />
+                                    </Button>
+                                </InputGroup.Append>
+                            </InputGroup>
+                        </div>
+                    </Card.Header>
                     <Card.Body>
                         <Table bordered hover striped variant="dark">
                             <thead>
@@ -193,7 +226,7 @@ export default class RecipeList extends Component {
                                         <FontAwesomeIcon icon={faStepBackward} /> Prev
                                     </Button>
                                 </InputGroup.Prepend>
-                                <FormControl style={pageNumCss} className={"bg-dark"} name="currentPage" value={currentPage}
+                                <FormControl className={"page-num bg-dark"} name="currentPage" value={currentPage}
                                     onChange={this.changePage} />
                                 <InputGroup.Append>
                                     <Button type="button" variant="outline-info" disabled={currentPage === totalPages ? true : false}

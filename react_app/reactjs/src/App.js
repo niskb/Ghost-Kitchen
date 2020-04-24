@@ -12,9 +12,6 @@ import UserList from './components/UserList';
 import Footer from './components/Footer';
 
 export default function App() {
-    const marginTop = {
-        marginTop: "20px"
-    };
 
     const heading = "Welcome to the Ghost Kitchen!";
     const desc = "Ghost Kitchen project using Spring Boot and React!";
@@ -25,7 +22,7 @@ export default function App() {
           <NavigationBar />
           <Container>
               <Row>
-                  <Col lg={12} style={marginTop}>
+                  <Col lg={12} className={"marginTop"}>
                       <Switch>
                           <Route path="/" exact component={() => <Welcome heading={heading} desc={desc} name={name}/>} />
                           <Route path="/add" exact component={Recipe} />

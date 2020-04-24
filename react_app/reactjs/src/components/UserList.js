@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Card, Table, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUsers, faStepBackward, faFastBackward, faStepForward, faFastForward } from '@fortawesome/free-solid-svg-icons'
+import './Style.css';
 import axios from 'axios';
 
 export default class UserList extends Component {
@@ -72,15 +73,7 @@ export default class UserList extends Component {
         const lastIndex = currentPage * usersPerPage;
         const firstIndex = lastIndex - usersPerPage;
         const currentUsers = users.slice(firstIndex, lastIndex);
-        const totalPages = users.length / usersPerPage;
-
-        const pageNumCss = {
-            width: "45px",
-            border: "1px solid #17A2B8",
-            color: "#17A2B8",
-            textAlign: "center",
-            fontWeight: "bold"
-        };
+        const totalPages = Math.ceil(users.length / usersPerPage);
 
         return (
             <div>
@@ -129,7 +122,7 @@ export default class UserList extends Component {
                                         <FontAwesomeIcon icon={faStepBackward} /> Prev
                                     </Button>
                                 </InputGroup.Prepend>
-                                <FormControl style={pageNumCss} className={"bg-dark"} name="currentPage" value={currentPage}
+                                <FormControl className={"page-num bg-dark"} name="currentPage" value={currentPage}
                                     onChange={this.changePage}/>
                                 <InputGroup.Append>
                                     <Button type="button" variant="outline-info" disabled={currentPage === totalPages ? true : false}
