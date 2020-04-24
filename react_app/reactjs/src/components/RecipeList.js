@@ -22,12 +22,30 @@ export default class RecipeList extends Component {
     }
 
     findAllRecipes() {
-        axios.get("http://localhost:8080/rest/recipes")
-            .then(response => response.data)
+        fetch("http://localhost:8080/rest/recipes")
+            .then(response => response.json())
             .then((data) => {
                 this.setState({ recipes: data });
             });
     }
+
+    /*deleteRecipe = (recipeId) => {
+        fetch("http://localhost:8080/rest/recipes/" + recipeId, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then((recipe) => {
+            if (recipe) {
+                this.setState({ "show": true });
+                setTimeout(() => this.setState({ "show": false }), 3000);
+                this.setState({
+                    recipes: this.state.recipes.filter(recipe => recipe.id !== recipeId)
+                });
+            } else {
+                this.setState({ "show": false });
+            }
+        });
+    };*/
 
     deleteRecipe = (recipeId) => {
         axios.delete("http://localhost:8080/rest/recipes/" + recipeId)

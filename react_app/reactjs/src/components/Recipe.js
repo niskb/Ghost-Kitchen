@@ -4,7 +4,6 @@ import { Card, Form, Button, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faPlusSquare, faUndo, faList, faEdit } from '@fortawesome/free-solid-svg-icons'
 import MyToast from './MyToast';
-import axios from 'axios';
 
 export default class Recipe extends Component {
 
@@ -28,16 +27,17 @@ export default class Recipe extends Component {
     }
 
     findRecipeById = (recipeId) => {
-        axios.get("http://localhost:8080/rest/recipes/" + recipeId)
-            .then(response => {
-                if (response.data != null) {
+        fetch("http://localhost:8080/rest/recipes/" + recipeId)
+            .then(response => response.json())
+            .then((recipe) => {
+                if (recipe) {
                     this.setState({
-                        id: response.data.id,
-                        title: response.data.title,
-                        href: response.data.href,
-                        ingredients: response.data.ingredients,
-                        thumbnail: response.data.thumbnail,
-                        price: response.data.price
+                        id: recipe.id,
+                        title: recipe.title,
+                        href: recipe.href,
+                        ingredients: recipe.ingredients,
+                        thumbnail: recipe.thumbnail,
+                        price: recipe.price
                     });
                 }
             }).catch((error) => {
@@ -59,37 +59,55 @@ export default class Recipe extends Component {
             thumbnail: this.state.thumbnail,
             price: this.state.price
         };
-        axios.put("http://localhost:8080/rest/recipes", recipe)
-            .then(response => {
-                if (response.data != null) {
-                    this.setState({ "show": true, "method":"put" });
-                    setTimeout(() => this.setState({ "show": false }), 3000);
-                    setTimeout(() => this.recipeList(), 3000);
-                } else {
-                    this.setState({ "show": false });
-                }
-            });
+
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        fetch("http://localhost:8080/rest/recipes", {
+            method: 'PUT',
+            body: JSON.stringify(recipe),
+            headers
+        })
+        .then(response => response.json())
+        .then((recipe) => {
+            if (recipe) {
+                this.setState({ "show": true, "method": "put" });
+                setTimeout(() => this.setState({ "show": false }), 3000);
+                setTimeout(() => this.recipeList(), 3000);
+            } else {
+                this.setState({ "show": false });
+            }
+        });
         this.setState(this.initialState);
     };
 
     submitRecipe = event => {
         event.preventDefault();
-        const recipe = {
-            title: this.state.title,
-            href: this.state.href,
-            ingredients: this.state.ingredients,
-            thumbnail: this.state.thumbnail,
-            price: this.state.price
-        };
-        axios.post("http://localhost:8080/rest/recipes", recipe)
-            .then(response => {
-                if (response.data != null) {
-                    this.setState({ "show": true, "method": "post" });
-                    setTimeout(() => this.setState({ "show": false }), 3000);
-                } else {
-                    this.setState({ "show": false });
-                }
-            });
+            const recipe = {
+                title: this.state.title,
+                href: this.state.href,
+                ingredients: this.state.ingredients,
+                thumbnail: this.state.thumbnail,
+                price: this.state.price
+            };
+
+            const headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+
+            fetch("http://localhost:8080/rest/recipes", {
+                method: 'POST',
+                body: JSON.stringify(recipe),
+                headers
+            })
+            .then(response => response.json())
+            .then((recipe) => {
+                if (recipe) {
+                this.setState({ "show": true, "method": "post" });
+                setTimeout(() => this.setState({ "show": false }), 3000);
+            } else {
+                this.setState({ "show": false });
+            }
+        });
         this.setState(this.initialState);
     };
 

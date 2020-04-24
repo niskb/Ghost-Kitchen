@@ -20,7 +20,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     {
         RecipeBag recipeBag = Loader.loadRecipes();
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 1000; i++) {
             Recipe recipe = new Recipe();
             recipe.setTitle(recipeBag.getRecipe(i).getTitle());
             recipe.setHref(recipeBag.getRecipe(i).getHref());
