@@ -52,18 +52,22 @@ export default class RecipeList extends Component {
     };*/
 
     deleteRecipe = (recipeId) => {
-        axios.delete("http://localhost:8080/rest/recipes/" + recipeId)
-            .then(response => {
-                if (response.data != null) {
-                    this.setState({ "show": true });
-                    setTimeout(() => this.setState({ "show": false }), 3000);
-                    this.setState({
-                        recipes: this.state.recipes.filter(recipe => recipe.id !== recipeId)
-                    });
-                } else {
-                    this.setState({ "show": false });
-                }
-            });
+        if (recipeId > 1000) {
+            axios.delete("http://localhost:8080/rest/recipes/" + recipeId)
+                .then(response => {
+                    if (response.data != null) {
+                        this.setState({ "show": true });
+                        setTimeout(() => this.setState({ "show": false }), 3000);
+                        this.setState({
+                            recipes: this.state.recipes.filter(recipe => recipe.id !== recipeId)
+                        });
+                    } else {
+                        this.setState({ "show": false });
+                    }
+                });
+        } else {
+            alert("You cannot delete the Ghost Kitchen's supplied list of meals!");
+        }
     };
 
     changePage = event => {
@@ -168,7 +172,7 @@ export default class RecipeList extends Component {
                                     <th>Thumbnail</th>
                                     <th>Price ($)</th>
                                     <th>Edit Meal</th>
-                                    <th>Is this meal Suggested?</th>
+                                    <th>Meal Contents Editable?</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -200,7 +204,7 @@ export default class RecipeList extends Component {
                                                 <td>
 
                                                     <ButtonGroup>
-                                                        <Link to={"edit/" + recipe.id} className="btn btn-warning"><FontAwesomeIcon icon={faEdit} /></Link>{' '}
+                                                        <Link to={"edit/" + recipe.id} className="btn btn-warning" ><FontAwesomeIcon icon={faEdit} /></Link>{' '}
                                                         <Button variant="danger" onClick={this.deleteRecipe.bind(this, recipe.id)}>
                                                             <FontAwesomeIcon icon={faTrash} />
                                                         </Button>
@@ -209,7 +213,6 @@ export default class RecipeList extends Component {
                                                 </td>
                                                 <td align="center">
                                                     <b>{recipe.isSuggested.includes("true") ? <FontAwesomeIcon icon={faEquals} /> : <FontAwesomeIcon icon={faNotEqual} /> }</b>
-                                                    
                                                 </td>
                                             </tr>
                                             ))

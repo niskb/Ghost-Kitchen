@@ -51,36 +51,40 @@ export default class Recipe extends Component {
     };
 
     updateRecipe = event => {
-        event.preventDefault();
-        const recipe = {
-            id: this.state.id,
-            title: this.state.title,
-            href: this.state.href,
-            ingredients: this.state.ingredients,
-            thumbnail: this.state.thumbnail,
-            price: this.state.price,
-            isSuggested: "true"
-        };
+        if (this.state.isSuggested.includes("true")) {
+            event.preventDefault();
+            const recipe = {
+                id: this.state.id,
+                title: this.state.title,
+                href: this.state.href,
+                ingredients: this.state.ingredients,
+                thumbnail: this.state.thumbnail,
+                price: this.state.price,
+                isSuggested: "true"
+            };
 
-        const headers = new Headers();
-        headers.append('Content-Type', 'application/json');
+            const headers = new Headers();
+            headers.append('Content-Type', 'application/json');
 
-        fetch("http://localhost:8080/rest/recipes", {
-            method: 'PUT',
-            body: JSON.stringify(recipe),
-            headers
-        })
-        .then(response => response.json())
-        .then((recipe) => {
-            if (recipe) {
-                this.setState({ "show": true, "method": "put" });
-                setTimeout(() => this.setState({ "show": false }), 3000);
-                setTimeout(() => this.recipeList(), 3000);
-            } else {
-                this.setState({ "show": false });
-            }
-        });
-        this.setState(this.initialState);
+            fetch("http://localhost:8080/rest/recipes", {
+                method: 'PUT',
+                body: JSON.stringify(recipe),
+                headers
+            })
+                .then(response => response.json())
+                .then((recipe) => {
+                    if (recipe) {
+                        this.setState({ "show": true, "method": "put" });
+                        setTimeout(() => this.setState({ "show": false }), 3000);
+                        setTimeout(() => this.recipeList(), 3000);
+                    } else {
+                        this.setState({ "show": false });
+                    }
+                });
+            this.setState(this.initialState);
+        } else {
+            alert("You cannot modify the Ghost Kitchen's supplied list of meals!");
+        }
     };
 
     submitRecipe = event => {
