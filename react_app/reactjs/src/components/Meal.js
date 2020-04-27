@@ -5,14 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faPlusSquare, faUndo, faList, faEdit } from '@fortawesome/free-solid-svg-icons'
 import MyToast from './MyToast';
 
-export default class Recipe extends Component {
+export default class Meal extends Component {
 
     constructor(props) {
         super(props);
         this.state = this.initialState;
         this.state.show = false;
-        this.recipeChange = this.recipeChange.bind(this);
-        this.submitRecipe = this.submitRecipe.bind(this);
+        this.mealChange = this.mealChange.bind(this);
+        this.submitMeal = this.submitMeal.bind(this);
     }
 
     initialState = {
@@ -20,25 +20,25 @@ export default class Recipe extends Component {
     };
 
     componentDidMount() {
-        const recipeId = +this.props.match.params.id;
-        if (recipeId) {
-            this.findRecipeById(recipeId);
+        const mealId = +this.props.match.params.id;
+        if (mealId) {
+            this.findMealById(mealId);
         }
     }
 
-    findRecipeById = (recipeId) => {
-        fetch("http://localhost:8080/rest/recipes/" + recipeId)
+    findMealById = (mealId) => {
+        fetch("http://localhost:8080/rest/meals/" + mealId)
             .then(response => response.json())
-            .then((recipe) => {
-                if (recipe) {
+            .then((meal) => {
+                if (meal) {
                     this.setState({
-                        id: recipe.id,
-                        title: recipe.title,
-                        href: recipe.href,
-                        ingredients: recipe.ingredients,
-                        thumbnail: recipe.thumbnail,
-                        price: recipe.price,
-                        isSuggested: recipe.isSuggested
+                        id: meal.id,
+                        title: meal.title,
+                        href: meal.href,
+                        ingredients: meal.ingredients,
+                        thumbnail: meal.thumbnail,
+                        price: meal.price,
+                        isSuggested: meal.isSuggested
                     });
                 }
             }).catch((error) => {
@@ -46,14 +46,14 @@ export default class Recipe extends Component {
             });
     }
 
-    resetRecipe = () => {
+    resetMeal = () => {
         this.setState(() => this.initialState);
     };
 
-    updateRecipe = event => {
+    updateMeal = event => {
         if (this.state.isSuggested.includes("true")) {
             event.preventDefault();
-            const recipe = {
+            const meal = {
                 id: this.state.id,
                 title: this.state.title,
                 href: this.state.href,
@@ -66,17 +66,17 @@ export default class Recipe extends Component {
             const headers = new Headers();
             headers.append('Content-Type', 'application/json');
 
-            fetch("http://localhost:8080/rest/recipes", {
+            fetch("http://localhost:8080/rest/meals", {
                 method: 'PUT',
-                body: JSON.stringify(recipe),
+                body: JSON.stringify(meal),
                 headers
             })
                 .then(response => response.json())
-                .then((recipe) => {
-                    if (recipe) {
+                .then((meal) => {
+                    if (meal) {
                         this.setState({ "show": true, "method": "put" });
                         setTimeout(() => this.setState({ "show": false }), 3000);
-                        setTimeout(() => this.recipeList(), 3000);
+                        setTimeout(() => this.mealList(), 3000);
                     } else {
                         this.setState({ "show": false });
                     }
@@ -87,9 +87,9 @@ export default class Recipe extends Component {
         }
     };
 
-    submitRecipe = event => {
+    submitMeal = event => {
         event.preventDefault();
-            const recipe = {
+        const meal = {
                 title: this.state.title,
                 href: this.state.href,
                 ingredients: this.state.ingredients,
@@ -101,14 +101,14 @@ export default class Recipe extends Component {
             const headers = new Headers();
             headers.append('Content-Type', 'application/json');
 
-            fetch("http://localhost:8080/rest/recipes", {
+            fetch("http://localhost:8080/rest/meals", {
                 method: 'POST',
-                body: JSON.stringify(recipe),
+                body: JSON.stringify(meal),
                 headers
             })
             .then(response => response.json())
-            .then((recipe) => {
-                if (recipe) {
+                .then((meal) => {
+                    if (meal) {
                 this.setState({ "show": true, "method": "post" });
                 setTimeout(() => this.setState({ "show": false }), 3000);
             } else {
@@ -118,13 +118,13 @@ export default class Recipe extends Component {
         this.setState(this.initialState);
     };
 
-    recipeChange = event => {
+    mealChange = event => {
         this.setState({
             [event.target.name]: event.target.value
         });
     };
 
-    recipeList = () => {
+    mealList = () => {
         return this.props.history.push("/list");
     };
 
@@ -137,36 +137,36 @@ export default class Recipe extends Component {
                 </div>
                     <Card className={"border border-dark bg-dark text-white"}>
                     <Card.Header><FontAwesomeIcon icon={this.state.id ? faEdit : faPlusSquare } />{this.state.id ? " Update Meal" : " Suggest New Meal"}</Card.Header>
-                    <Form onReset={this.resetRecipe} onSubmit={this.state.id ? this.updateRecipe : this.submitRecipe} id="recipeFormId">
+                    <Form onReset={this.resetMeal} onSubmit={this.state.id ? this.updateMeal : this.submitMeal} id="mealFormId">
                             <Card.Body>
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="formGridTitle">
                                         <Form.Label>Title</Form.Label>
-                                        <Form.Control required autoComplete="off" type="text" name="title" value={title} onChange={this.recipeChange} className={"bg-dark text-white"} placeholder="Enter Meal Title" />
+                                    <Form.Control required autoComplete="off" type="text" name="title" value={title} onChange={this.mealChange} className={"bg-dark text-white"} placeholder="Enter Meal Title" />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridHREF">
                                         <Form.Label>HREF</Form.Label>
-                                        <Form.Control required autoComplete="off" type="text" name="href" value={href} onChange={this.recipeChange} className={"bg-dark text-white"} placeholder="Enter Meal HREF" />
+                                    <Form.Control required autoComplete="off" type="text" name="href" value={href} onChange={this.mealChange} className={"bg-dark text-white"} placeholder="Enter Meal HREF" />
                                     </Form.Group>
                                 </Form.Row>
 
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="formGridPrice">
                                         <Form.Label>Price</Form.Label>
-                                        <Form.Control required autoComplete="off" type="text" name="price" value={price} onChange={this.recipeChange} className={"bg-dark text-white"} placeholder="Enter Meal Price $" />
+                                    <Form.Control required autoComplete="off" type="text" name="price" value={price} onChange={this.mealChange} className={"bg-dark text-white"} placeholder="Enter Meal Price $" />
                                     </Form.Group>
 
                                     <Form.Group as={Col} controlId="formGridThumbnail">
                                         <Form.Label>Thumbnail URL</Form.Label>
-                                        <Form.Control required autoComplete="off" type="text" name="thumbnail" value={thumbnail} onChange={this.recipeChange} className={"bg-dark text-white"} placeholder="Enter Meal Thumbnail" />
+                                    <Form.Control required autoComplete="off" type="text" name="thumbnail" value={thumbnail} onChange={this.mealChange} className={"bg-dark text-white"} placeholder="Enter Meal Thumbnail" />
                                     </Form.Group>
                                 </Form.Row>
 
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="formGridIngredients">
                                         <Form.Label>Ingredients</Form.Label>
-                                        <Form.Control required autoComplete="off" type="text" name="ingredients" value={ingredients} onChange={this.recipeChange} className={"bg-dark text-white"} placeholder="Enter Meal Ingredients" />
+                                    <Form.Control required autoComplete="off" type="text" name="ingredients" value={ingredients} onChange={this.mealChange} className={"bg-dark text-white"} placeholder="Enter Meal Ingredients" />
                                     </Form.Group>
                                 </Form.Row>
                             </Card.Body>
@@ -176,7 +176,7 @@ export default class Recipe extends Component {
                             <Button size="sm" variant="info" type="reset">
                                 <FontAwesomeIcon icon={faUndo} /> Reset
                                 </Button>{' '}
-                            <Button size="sm" variant="info" type="button" onClick={this.recipeList.bind()}>
+                            <Button size="sm" variant="info" type="button" onClick={this.mealList.bind()}>
                                 <FontAwesomeIcon icon={faList} /> Meal List
                                 </Button>
                             </Card.Footer>

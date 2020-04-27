@@ -2,12 +2,12 @@ package com.niskb.model;
 
 import java.io.Serializable;
 
-public class RecipeBag implements Serializable {
+public class RecipePuppyBag implements Serializable {
 
     private RecipePuppy[] recipes;
     private int nElems;
 
-    public RecipeBag(int maxSize) {
+    public RecipePuppyBag(int maxSize) {
         recipes = new RecipePuppy[maxSize];
         nElems = 0;
     }

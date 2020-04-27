@@ -2,7 +2,7 @@ package com.niskb.model;
 
 import java.io.Serializable;
 
-public class Recipe implements Serializable {
+public class Meal implements Serializable {
 
     private Long id;
     private String title;

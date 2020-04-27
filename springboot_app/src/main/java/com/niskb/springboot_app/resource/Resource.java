@@ -1,6 +1,5 @@
 package com.niskb.springboot_app.resource;
 
-import com.niskb.model.Recipe;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
 package com.niskb.api;
 
-import com.niskb.model.RecipeBag;
+import com.niskb.model.RecipePuppyBag;
 import com.niskb.model.RecipePuppy;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,9 +14,9 @@ import java.util.List;
 
 public class Downloader {
 
-    private static RecipeBag recipeBag = new RecipeBag(1000);
+    private static RecipePuppyBag recipeBag = new RecipePuppyBag(1000);
 
-    public static RecipeBag downloadData() {
+    public static RecipePuppyBag downloadData() {
         List<String> titleList = new ArrayList<String>();
         List<String> hrefList = new ArrayList<String>();
         List<String> ingredientsList = new ArrayList<String>();

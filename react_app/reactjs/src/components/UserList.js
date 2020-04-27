@@ -14,7 +14,7 @@ export default class UserList extends Component {
         this.state = {
             users: [],
             currentPage: 1,
-            usersPerPage: 15
+            usersPerPage: 5
         };
     }
 

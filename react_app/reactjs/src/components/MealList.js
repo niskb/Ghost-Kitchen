@@ -8,42 +8,42 @@ import MyToast from './MyToast';
 import './Style.css';
 import axios from 'axios';
 
-export default class RecipeList extends Component {
+export default class MealList extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            recipes: [],
+            meals: [],
             search: '',
             currentPage: 1,
-            recipesPerPage: 8
+            mealsPerPage: 5
         };
     }
 
     componentDidMount() {
-        this.findAllRecipes();
+        this.findAllMeals();
     }
 
-    findAllRecipes() {
-        fetch("http://localhost:8080/rest/recipes")
+    findAllMeals() {
+        fetch("http://localhost:8080/rest/meals")
             .then(response => response.json())
             .then((data) => {
-                this.setState({ recipes: data });
+                this.setState({ meals: data });
             });
     }
 
-    /*deleteRecipe = (recipeId) => {
-        fetch("http://localhost:8080/rest/recipes/" + recipeId, {
+    /*deleteMeal = (mealId) => {
+        fetch("http://localhost:8080/rest/meals/" + mealId, {
             method: 'DELETE'
         })
         .then(response => response.json())
-        .then((recipe) => {
-            if (recipe) {
+        .then((meal) => {
+            if (meal) {
                 this.setState({ "show": true });
                 setTimeout(() => this.setState({ "show": false }), 3000);
                 this.setState({
-                    recipes: this.state.recipes.filter(recipe => recipe.id !== recipeId)
+                    meals: this.state.meals.filter(meal => meal.id !== mealId)
                 });
             } else {
                 this.setState({ "show": false });
@@ -51,15 +51,15 @@ export default class RecipeList extends Component {
         });
     };*/
 
-    deleteRecipe = (recipeId) => {
-        if (recipeId > 1000) {
-            axios.delete("http://localhost:8080/rest/recipes/" + recipeId)
+    deleteMeal = (mealId) => {
+        if (mealId > 1000) {
+            axios.delete("http://localhost:8080/rest/meals/" + mealId)
                 .then(response => {
                     if (response.data != null) {
                         this.setState({ "show": true });
                         setTimeout(() => this.setState({ "show": false }), 3000);
                         this.setState({
-                            recipes: this.state.recipes.filter(recipe => recipe.id !== recipeId)
+                            meals: this.state.meals.filter(meal => meal.id !== mealId)
                         });
                     } else {
                         this.setState({ "show": false });
@@ -93,15 +93,15 @@ export default class RecipeList extends Component {
     };
 
     lastPage = () => {
-        if (this.state.currentPage < Math.ceil(this.state.recipes.length / this.state.recipesPerPage)) {
+        if (this.state.currentPage < Math.ceil(this.state.meals.length / this.state.mealsPerPage)) {
             this.setState({
-                currentPage: Math.ceil(this.state.recipes.length / this.state.recipesPerPage)
+                currentPage: Math.ceil(this.state.meals.length / this.state.mealsPerPage)
             });
         }
     };
 
     nextPage = () => {
-        if (this.state.currentPage < Math.ceil(this.state.recipes.length / this.state.recipesPerPage)) {
+        if (this.state.currentPage < Math.ceil(this.state.meals.length / this.state.mealsPerPage)) {
             this.setState({
                 currentPage: this.state.currentPage + 1
             });
@@ -116,25 +116,25 @@ export default class RecipeList extends Component {
 
     cancelSearch = () => {
         this.setState({ "search": '' });
-        this.findAllRecipes(this.state.currentPage);
+        this.findAllMeals(this.state.currentPage);
     };
 
     searchData = (currentPage) => {
         this.setState({ currentPage: 1 })
-        axios.get("http://localhost:8080/rest/recipes")
+        axios.get("http://localhost:8080/rest/meals")
             .then(response => response.data)
             .then((data) => {
-                const filteredRecipes = data.filter(recipe => recipe.ingredients.toLowerCase().includes(this.state.search.toLowerCase()));
-                this.setState({ recipes: filteredRecipes });
+                const filteredMeals = data.filter(meal => meal.ingredients.toLowerCase().includes(this.state.search.toLowerCase()));
+                this.setState({ meals: filteredMeals });
             });
     };
 
     render() {
-        const { recipes, currentPage, recipesPerPage, search } = this.state
-        const lastIndex = currentPage * recipesPerPage;
-        const firstIndex = lastIndex - recipesPerPage;
-        const currentRecipes = recipes.slice(firstIndex, lastIndex);
-        const totalPages = Math.ceil(recipes.length / recipesPerPage);
+        const { meals, currentPage, mealsPerPage, search } = this.state
+        const lastIndex = currentPage * mealsPerPage;
+        const firstIndex = lastIndex - mealsPerPage;
+        const currentMeals = meals.slice(firstIndex, lastIndex);
+        const totalPages = Math.ceil(meals.length / mealsPerPage);
 
         return (
             <div>
@@ -176,43 +176,43 @@ export default class RecipeList extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                    {this.state.recipes.length === 0 ?
-                                        <td colSpan="8">{this.state.recipes.length} Meals Available</td> :
-                                        currentRecipes.map((recipe) => (
-                                            <tr key={recipe.id}>
-                                                <td>{recipe.id}</td>
-                                                <td>{recipe.title}</td>
+                                {this.state.meals.length === 0 ?
+                                    <td colSpan="8">{this.state.meals.length} Meals Available</td> :
+                                    currentMeals.map((meal) => (
+                                        <tr key={meal.id}>
+                                            <td>{meal.id}</td>
+                                            <td>{meal.title}</td>
                                                 <td>
                                                     <Nav className="ml-auto" navbar>
                                                         <Button variant="link" size="sm">
                                                             <NavItem>
                                                                 Link
-                                                                <NavLink href={recipe.href}></NavLink>
+                                                                <NavLink href={meal.href}></NavLink>
                                                             </NavItem>
                                                         </Button>
                                                     </Nav>
                                                 </td>
                                                 <td>
-                                                    {recipe.ingredients}
+                                                {meal.ingredients}
                                                 </td>
                                                 <td>
-                                                    <Image src={recipe.thumbnail} roundedCircle width="76" height="76" />
+                                                <Image src={meal.thumbnail} roundedCircle width="76" height="76" />
                                                 </td>
                                                 <td>
-                                                    {recipe.price}
+                                                {meal.price}
                                                 </td>
                                                 <td>
 
                                                     <ButtonGroup>
-                                                        <Link to={"edit/" + recipe.id} className="btn btn-warning" ><FontAwesomeIcon icon={faEdit} /></Link>{' '}
-                                                        <Button variant="danger" onClick={this.deleteRecipe.bind(this, recipe.id)}>
+                                                    <Link to={"edit/" + meal.id} className="btn btn-warning" ><FontAwesomeIcon icon={faEdit} /></Link>{' '}
+                                                    <Button variant="danger" onClick={this.deleteMeal.bind(this, meal.id)}>
                                                             <FontAwesomeIcon icon={faTrash} />
                                                         </Button>
                                                     </ButtonGroup>
 
                                                 </td>
                                                 <td align="center">
-                                                    <b>{recipe.isSuggested.includes("true") ? <FontAwesomeIcon icon={faEquals} /> : <FontAwesomeIcon icon={faNotEqual} /> }</b>
+                                                <b>{meal.isSuggested.includes("true") ? <FontAwesomeIcon icon={faEquals} /> : <FontAwesomeIcon icon={faNotEqual} /> }</b>
                                                 </td>
                                             </tr>
                                             ))
