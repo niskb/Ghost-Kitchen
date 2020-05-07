@@ -21,9 +21,9 @@ public class RecipePuppyBag implements Serializable {
     }
 
     public void displayRecipesInConsole() {
-    for(int i = 0; i < nElems; i++) {
-        System.out.println(recipes[i]);
-    }
+        for(int i = 0; i < nElems; i++) {
+            System.out.println(recipes[i]);
+        }
     }
 
 }

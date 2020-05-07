@@ -28,6 +28,7 @@ public class MealServiceImpl implements MealService {
             meal.setPrice(recipeBag.getRecipe(i).getPrice());
             meal.setId(mealId++);
             meal.setIsSuggested("false");
+            meal.setIsSelected("false");
             System.out.println("PUTTING NEW MEAL IN, Meal Id: " + meal.getId());
             mealMap.put(meal.getId(), meal);
         }

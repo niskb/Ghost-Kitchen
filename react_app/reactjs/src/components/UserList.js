@@ -27,6 +27,23 @@ export default class UserList extends Component {
             .then(response => response.data)
             .then((data) => {
                 this.setState({ users: data });
+                for (var i = 0; i < this.state.users.length; i++) {
+                    const userI = this.state.users[i];
+                    const user = {
+                        id: (i+1),
+                        name: (userI.first + " " + userI.last),
+                        email: userI.email,
+                        address: userI.address
+                    };
+                    axios.put("http://localhost:8080/rest/users", user)
+                        .then(response => {
+                            if (response.data != null) {
+                                console.log("Sended to REST Repository!");
+                            } else {
+                                console.log("Failed to send to REST Repository!");
+                            }
+                        });
+            }
             });
     }
 
@@ -85,19 +102,17 @@ export default class UserList extends Component {
                                 <td>Name</td>
                                 <td>Email</td>
                                 <td>Address</td>
-                                <td>Created</td>
                             </thead>
                             <tbody>
                                 {users.length === 0 ?
                                     <tr align="center">
-                                        <td colSpan="4">No Users Available</td>
+                                        <td colSpan="3">No Users Available</td>
                                     </tr> :
                                     currentUsers.map((user, index) => (
                                         <tr key={index}>
                                             <td>{user.first}{' '}{user.last}</td>
                                             <td>{user.email}</td>
                                             <td>{user.address}</td>
-                                            <td>{user.created}</td>
                                         </tr>
                                     ))
                                 }

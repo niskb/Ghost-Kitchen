@@ -11,6 +11,7 @@ public class Meal implements Serializable {
     private String thumbnail = "";
     private String price = "";
     private String isSuggested = "";
+    private String isSelected = "";
     private static Long idCounter = 1L;
 
     @Override
@@ -73,5 +74,9 @@ public class Meal implements Serializable {
     public String setIsSuggested(String isSuggested) {
         return this.isSuggested = isSuggested;
     }
+
+    public String getIsSelected() { return this.isSelected; }
+
+    public String setIsSelected(String isSelected) { return this.isSelected = isSelected; }
 
 }

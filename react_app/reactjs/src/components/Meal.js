@@ -16,7 +16,7 @@ export default class Meal extends Component {
     }
 
     initialState = {
-        id: '', title: '', href: '', ingredients: '', thumbnail: '', price: '', isSuggested: ''
+        id: '', title: '', href: '', ingredients: '', thumbnail: '', price: '', isSuggested: '', isSelected: ''
     };
 
     componentDidMount() {
@@ -38,7 +38,8 @@ export default class Meal extends Component {
                         ingredients: meal.ingredients,
                         thumbnail: meal.thumbnail,
                         price: meal.price,
-                        isSuggested: meal.isSuggested
+                        isSuggested: meal.isSuggested,
+                        isSelected: meal.isSelected
                     });
                 }
             }).catch((error) => {
@@ -60,7 +61,8 @@ export default class Meal extends Component {
                 ingredients: this.state.ingredients,
                 thumbnail: this.state.thumbnail,
                 price: this.state.price,
-                isSuggested: "true"
+                isSuggested: "true",
+                isSelected: "false"
             };
 
             const headers = new Headers();
@@ -95,7 +97,8 @@ export default class Meal extends Component {
                 ingredients: this.state.ingredients,
                 thumbnail: this.state.thumbnail,
                 price: this.state.price,
-                isSuggested: "true"
+                isSuggested: "true",
+                isSelected: "false"
             };
 
             const headers = new Headers();
