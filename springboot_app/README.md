@@ -1,3 +1,4 @@
+## MEALS
 # GET
 http://localhost:8080/rest/meals
 
@@ -13,7 +14,24 @@ http://localhost:8080/rest/meals
 # DELETE BY ID
 http://localhost:8080/rest/meals/{id}
 
-# Requests
+## USERS
+# GET
+http://localhost:8080/rest/users
+
+# GET BY ID
+http://localhost:8080/rest/users/{id}
+
+# POST
+http://localhost:8080/rest/users
+
+# PUT
+http://localhost:8080/rest/users
+
+# DELETE BY ID
+http://localhost:8080/rest/users/{id}
+
+## GET Request Example:
+http://localhost:8080/rest/meals/69
 
 {
 "id": 69,
