@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
 
-import { Card, Table, Nav, NavItem, NavLink, Image, Button, ButtonGroup, InputGroup, FormControl } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-
+import { Card, Table, Nav, NavItem, NavLink, Image, Button, ButtonGroup, InputGroup, FormControl, Form, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPizzaSlice, faFastBackward, faStepBackward, faStepForward, faFastForward, faSearch, faTimes, faClipboardCheck, faShoppingCart, faBurn } from '@fortawesome/free-solid-svg-icons'
+import { faFastBackward, faStepBackward, faStepForward, faFastForward, faClipboardCheck, faShoppingCart, faBurn, faDollarSign } from '@fortawesome/free-solid-svg-icons'
 import MyToast from './MyToast';
 import './Style.css';
 import axios from 'axios';
 
-export default class MealOrder extends Component {
+export default class Checkout extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
             meals: [],
-            search: '',
             currentPage: 1,
             mealsPerPage: 5,
-            total: 0.00
+            total: 0.00,
+            name: "",
+            email: "",
+            address: "",
+            phoneNumber: ""
         };
     }
 
@@ -31,9 +32,13 @@ export default class MealOrder extends Component {
         fetch("http://localhost:8080/rest/meals")
             .then(response => response.json())
             .then((data) => {
-                const filteredMeals = data.filter(meal => meal.isSuggested.includes("false"));
+                const filteredMeals = data.filter(meal => (meal.isSelected.includes("true") && meal.quantity > 0));
                 this.setState({ meals: filteredMeals });
-                this.calculateTotal();
+                if (this.state.meals.length === 0) {
+                    this.mealOrder();
+                } else {
+                    this.calculateTotal();
+                }
             });
     }
 
@@ -81,21 +86,6 @@ export default class MealOrder extends Component {
         });
     };
 
-    cancelSearch = () => {
-        this.setState({ "search": '' });
-        this.findAllMeals(this.state.currentPage);
-    };
-
-    searchData = (currentPage) => {
-        this.setState({ currentPage: 1 })
-        axios.get("http://localhost:8080/rest/meals")
-            .then(response => response.data)
-            .then((data) => {
-                const filteredMeals = data.filter(meal => meal.ingredients.toLowerCase().includes(this.state.search.toLowerCase()));
-                this.setState({ meals: filteredMeals });
-            });
-    };
-
     addMealToOrder = (meal) => {
         const changedMeal = {
             id: meal.id,
@@ -109,7 +99,7 @@ export default class MealOrder extends Component {
             quantity: (meal.quantity + 1)
         };
         axios.put("http://localhost:8080/rest/meals", changedMeal);
-        this.mealOrder();
+        window.location.reload();
     };
 
     removeMealToOrder = (meal) => {
@@ -140,11 +130,11 @@ export default class MealOrder extends Component {
             };
             axios.put("http://localhost:8080/rest/meals", changedMeal);
         }
-        this.mealOrder();
+        window.location.reload();
     };
 
     mealOrder = () => {
-        return window.location.reload();
+        return this.props.history.push("/order");
     };
 
     calculateTotal = () => {
@@ -176,8 +166,32 @@ export default class MealOrder extends Component {
         this.mealOrder();
     };
 
+    formNameChange = event => {
+        this.setState({
+            name: event.target.value
+        });
+    };
+
+    formEmailChange = event => {
+        this.setState({
+            email: event.target.value
+        });
+    };
+
+    formAddressChange = event => {
+        this.setState({
+            address: event.target.value
+        });
+    };
+
+    formPhoneNumberChange = event => {
+        this.setState({
+            phoneNumber: event.target.value
+        });
+    };
+
     render() {
-        const { meals, currentPage, mealsPerPage, search } = this.state
+        const { meals, currentPage, mealsPerPage } = this.state
         const lastIndex = currentPage * mealsPerPage;
         const firstIndex = lastIndex - mealsPerPage;
         const currentMeals = meals.slice(firstIndex, lastIndex);
@@ -191,21 +205,7 @@ export default class MealOrder extends Component {
                 <Card className={"border border-dark bg-dark text-white"}>
                     <Card.Header>
                         <div style={{ "float": "left" }}>
-                            <FontAwesomeIcon icon={faPizzaSlice} /> Order Meals
-                        </div>
-                        <div style={{ "float": "right" }}>
-                            <InputGroup size="sm">
-                                <FormControl placeHolder="Search By Ingredient" name="search" value={search} className={"info-border bg-dark text-white"}
-                                    onChange={this.searchChange} />
-                                <InputGroup.Append>
-                                    <Button size="sm" variant="outline-info" type="button" onClick={this.searchData}>
-                                        <FontAwesomeIcon icon={faSearch} />
-                                    </Button>
-                                    <Button size="sm" variant="outline-danger" type="button" onClick={this.cancelSearch}>
-                                        <FontAwesomeIcon icon={faTimes} />
-                                    </Button>
-                                </InputGroup.Append>
-                            </InputGroup>
+                            <FontAwesomeIcon icon={faShoppingCart} /> Checkout
                         </div>
                     </Card.Header>
                     <Card.Body>
@@ -224,7 +224,7 @@ export default class MealOrder extends Component {
                             </thead>
                             <tbody>
                                 {this.state.meals.length === 0 ?
-                                    <td colSpan="8">{this.state.meals.length} Meals Available</td> :
+                                    <td colSpan="8">{this.state.meals.length} Meals in Order</td> :
                                     currentMeals.map((meal) => (
                                         <tr key={meal.id}>
                                             <td>{meal.id}</td>
@@ -300,11 +300,47 @@ export default class MealOrder extends Component {
                     </Card.Footer>
                 </Card>
                 <Card className={"border border-dark bg-dark text-white"}>
-                    <Card.Header>
+                    <Card.Footer>
                         <div style={{ "float": "left" }}>
                             Total: $ {this.state.total}
                         </div>
-                    </Card.Header>
+                    </Card.Footer>
+                    <Card.Footer>
+                        <div style={{ "float": "left" }}>
+                            Please give us some of your information so we know who you are and where to send your order to:
+                        </div>
+                        <div style={{ "float": "left" }}>
+                            We will contact you back "SOON" to ensure that you're not pranking us.
+                        </div>
+                    </Card.Footer>
+                    <Form>
+                        <Card.Body>
+                            <Form.Row>
+                                <Form.Group as={Col}>
+                                    <Form.Label>Name</Form.Label>
+                                    <Form.Control required autoComplete="off" type="text" onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }} onChange={this.formNameChange} className={"bg-dark text-white"} placeholder="Enter Name" />
+                                </Form.Group>
+                            </Form.Row>
+                            <Form.Row>
+                                <Form.Group as={Col}>
+                                    <Form.Label>Email</Form.Label>
+                                    <Form.Control required autoComplete="off" type="text" onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }} onChange={this.formEmailChange} className={"bg-dark text-white"} placeholder="Enter Email" />
+                                </Form.Group>
+                            </Form.Row>
+                            <Form.Row>
+                                <Form.Group as={Col}>
+                                    <Form.Label>Shipping Address</Form.Label>
+                                    <Form.Control required autoComplete="off" type="text" onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }} onChange={this.formAddressChange} className={"bg-dark text-white"} placeholder="Enter Shipping Address" />
+                                </Form.Group>
+                            </Form.Row>
+                            <Form.Row>
+                                <Form.Group as={Col}>
+                                    <Form.Label>Phone Number</Form.Label>
+                                    <Form.Control required autoComplete="off" type="text" onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }} onChange={this.formPhoneNumberChange} className={"bg-dark text-white"} placeholder="Enter Phone Number" />
+                                </Form.Group>
+                            </Form.Row>
+                        </Card.Body>
+                    </Form>
                     <Card.Footer>
                         <div style={{ "float": "left" }}>
                             <Button type="button" variant="outline-danger"
@@ -314,9 +350,7 @@ export default class MealOrder extends Component {
                         </div>
                         <div style={{ "float": "right" }}>
                             <Button type="button" variant="outline-info">
-                                <Link to="checkout" className="nav-link">
-                                    <FontAwesomeIcon icon={faShoppingCart} /> Go to Checkout
-                                </Link>
+                                <FontAwesomeIcon icon={faDollarSign} /> Make Payment
                             </Button>
                         </div>
                     </Card.Footer>
@@ -324,4 +358,5 @@ export default class MealOrder extends Component {
             </div>
         );
     }
+    //MAKE PAYMENT BUTTON DO SOMETHING
 }
