@@ -19,7 +19,7 @@ public class MealServiceImpl implements MealService {
 
     {
         RecipePuppyBag recipeBag = Loader.loadRecipes();
-        for(int i = 0; i < 1000; i++) {
+        for(int i = 0; i < recipeBag.getNElems(); i++) {
             Meal meal = new Meal();
             meal.setTitle(recipeBag.getRecipe(i).getTitle());
             meal.setHref(recipeBag.getRecipe(i).getHref());
@@ -29,6 +29,7 @@ public class MealServiceImpl implements MealService {
             meal.setId(mealId++);
             meal.setIsSuggested("false");
             meal.setIsSelected("false");
+            meal.setQuantity(0);
             System.out.println("PUTTING NEW MEAL IN, Meal Id: " + meal.getId());
             mealMap.put(meal.getId(), meal);
         }

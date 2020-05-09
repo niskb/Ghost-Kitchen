@@ -19,7 +19,7 @@ export default class UserList extends Component {
     }
 
     componentDidMount() {
-        this.findAllRandomUsers();
+       this.findAllRandomUsers();
     }
 
     findAllRandomUsers() {
@@ -33,7 +33,8 @@ export default class UserList extends Component {
                         id: (i+1),
                         name: (userI.first + " " + userI.last),
                         email: userI.email,
-                        address: userI.address
+                        address: userI.address,
+                        phoneNumber: ""
                     };
                     axios.put("http://localhost:8080/rest/users", user)
                         .then(response => {
@@ -99,6 +100,7 @@ export default class UserList extends Component {
                     <Card.Body>
                         <Table bordered hover striped variant="dark">
                             <thead>
+                                <td>#</td>
                                 <td>Name</td>
                                 <td>Email</td>
                                 <td>Address</td>
@@ -106,10 +108,11 @@ export default class UserList extends Component {
                             <tbody>
                                 {users.length === 0 ?
                                     <tr align="center">
-                                        <td colSpan="3">No Users Available</td>
+                                        <td colSpan="4">No Users Available</td>
                                     </tr> :
                                     currentUsers.map((user, index) => (
                                         <tr key={index}>
+                                            <td>{ (index + 1) + (usersPerPage * (currentPage - 1) ) }</td>
                                             <td>{user.first}{' '}{user.last}</td>
                                             <td>{user.email}</td>
                                             <td>{user.address}</td>

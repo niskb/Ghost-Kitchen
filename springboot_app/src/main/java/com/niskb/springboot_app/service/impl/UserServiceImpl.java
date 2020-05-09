@@ -4,6 +4,7 @@ import com.niskb.api.Loader;
 import com.niskb.model.Meal;
 import com.niskb.model.RecipePuppyBag;
 import com.niskb.model.User;
+import com.niskb.model.UserBag;
 import com.niskb.springboot_app.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,11 @@ public class UserServiceImpl implements UserService {
     {
         for(int i = 0; i < 75; i++) {
             User user = new User();
+            user.setId(userId++);
             user.setName("Default");
             user.setEmail("Default");
             user.setAddress("Default");
-            user.setId(userId++);
+            user.setPhoneNumber("Default");
             //System.out.println("PUTTING NEW USER IN, User Id: " + user.getId());
             userMap.put(user.getId(), user);
         }

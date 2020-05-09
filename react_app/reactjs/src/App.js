@@ -9,6 +9,7 @@ import Welcome from './components/Welcome';
 import Meal from './components/Meal';
 import MealList from './components/MealList';
 import UserList from './components/UserList';
+import MealOrder from './components/MealOrder';
 import Footer from './components/Footer';
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
                           <Route path="/edit/:id" exact component={Meal} />
                           <Route path="/list" exact component={MealList} />
                           <Route path="/users" exact component={UserList} />
+                          <Route path="/order" exact component={MealOrder} />
                       </Switch>
                   </Col>
               </Row>

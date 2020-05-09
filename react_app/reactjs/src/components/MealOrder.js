@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 
 import { Card, Table, Nav, NavItem, NavLink, Image, Button, ButtonGroup, InputGroup, FormControl } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faList, faEdit, faTrash, faFastBackward, faStepBackward, faStepForward, faFastForward, faSearch, faTimes, faEquals, faNotEqual } from '@fortawesome/free-solid-svg-icons'
+import { faPizzaSlice, faFastBackward, faStepBackward, faStepForward, faFastForward, faSearch, faTimes, faClipboardCheck, faShoppingCart, faBurn } from '@fortawesome/free-solid-svg-icons'
 import MyToast from './MyToast';
 import './Style.css';
 import axios from 'axios';
 
-export default class MealList extends Component {
+export default class MealOrder extends Component {
 
     constructor(props) {
         super(props);
@@ -17,7 +16,8 @@ export default class MealList extends Component {
             meals: [],
             search: '',
             currentPage: 1,
-            mealsPerPage: 5
+            mealsPerPage: 5,
+            total: 0.00
         };
     }
 
@@ -29,46 +29,11 @@ export default class MealList extends Component {
         fetch("http://localhost:8080/rest/meals")
             .then(response => response.json())
             .then((data) => {
-                this.setState({ meals: data });
+                const filteredMeals = data.filter(meal => meal.isSuggested.includes("false"));
+                this.setState({ meals: filteredMeals });
+                this.calculateTotal();
             });
     }
-
-    /*deleteMeal = (mealId) => {
-        fetch("http://localhost:8080/rest/meals/" + mealId, {
-            method: 'DELETE'
-        })
-        .then(response => response.json())
-        .then((meal) => {
-            if (meal) {
-                this.setState({ "show": true });
-                setTimeout(() => this.setState({ "show": false }), 3000);
-                this.setState({
-                    meals: this.state.meals.filter(meal => meal.id !== mealId)
-                });
-            } else {
-                this.setState({ "show": false });
-            }
-        });
-    };*/
-
-    deleteMeal = (mealId) => {
-        if (mealId > 1000) {
-            axios.delete("http://localhost:8080/rest/meals/" + mealId)
-                .then(response => {
-                    if (response.data != null) {
-                        this.setState({ "show": true });
-                        setTimeout(() => this.setState({ "show": false }), 3000);
-                        this.setState({
-                            meals: this.state.meals.filter(meal => meal.id !== mealId)
-                        });
-                    } else {
-                        this.setState({ "show": false });
-                    }
-                });
-        } else {
-            alert("You cannot delete the Ghost Kitchen's supplied list of meals!");
-        }
-    };
 
     changePage = event => {
         this.setState({
@@ -110,7 +75,7 @@ export default class MealList extends Component {
 
     searchChange = event => {
         this.setState({
-            [event.target.name] : event.target.value
+            [event.target.name]: event.target.value
         });
     };
 
@@ -129,6 +94,86 @@ export default class MealList extends Component {
             });
     };
 
+    addMealToOrder = (meal) => {
+        const changedMeal = {
+            id: meal.id,
+            title: meal.title,
+            href: meal.href,
+            ingredients: meal.ingredients,
+            thumbnail: meal.thumbnail,
+            price: meal.price,
+            isSuggested: meal.isSuggested,
+            isSelected: "true",
+            quantity: (meal.quantity + 1)
+        };
+        axios.put("http://localhost:8080/rest/meals", changedMeal);
+        this.mealOrder();
+    };
+
+    removeMealToOrder = (meal) => {
+        if (meal.quantity === 1) {
+            const changedMeal = {
+                id: meal.id,
+                title: meal.title,
+                href: meal.href,
+                ingredients: meal.ingredients,
+                thumbnail: meal.thumbnail,
+                price: meal.price,
+                isSuggested: meal.isSuggested,
+                isSelected: "false",
+                quantity: (meal.quantity - 1)
+            };
+            axios.put("http://localhost:8080/rest/meals", changedMeal);
+        } else if (meal.quantity > 0) {
+            const changedMeal = {
+                id: meal.id,
+                title: meal.title,
+                href: meal.href,
+                ingredients: meal.ingredients,
+                thumbnail: meal.thumbnail,
+                price: meal.price,
+                isSuggested: meal.isSuggested,
+                isSelected: "true",
+                quantity: (meal.quantity - 1)
+            };
+            axios.put("http://localhost:8080/rest/meals", changedMeal);
+        }
+        this.mealOrder();
+    };
+
+    mealOrder = () => {
+        return window.location.reload();
+    };
+
+    calculateTotal = () => {
+        fetch("http://localhost:8080/rest/meals")
+            .then(response => response.json())
+            .then((data) => {
+                const filteredMeals = data.filter(meal => meal.quantity > 0);
+                for (var i = 0; i < filteredMeals.length; i++) {
+                    this.setState({ total: (this.state.total + (filteredMeals[i].quantity * filteredMeals[i].price)) });
+                }
+            });
+    }
+
+    resetOrder = () => {
+        for (var i = 0; i < this.state.meals.length; i++) {
+            const changedMeal = {
+                id: this.state.meals[i].id,
+                title: this.state.meals[i].title,
+                href: this.state.meals[i].href,
+                ingredients: this.state.meals[i].ingredients,
+                thumbnail: this.state.meals[i].thumbnail,
+                price: this.state.meals[i].price,
+                isSuggested: this.state.meals[i].isSuggested,
+                isSelected: "false",
+                quantity: 0
+            };
+            axios.put("http://localhost:8080/rest/meals", changedMeal);
+        }
+        this.mealOrder();
+    };
+
     render() {
         const { meals, currentPage, mealsPerPage, search } = this.state
         const lastIndex = currentPage * mealsPerPage;
@@ -143,16 +188,16 @@ export default class MealList extends Component {
                 </div>
                 <Card className={"border border-dark bg-dark text-white"}>
                     <Card.Header>
-                        <div style={{"float":"left"}}>
-                            <FontAwesomeIcon icon={faList} /> Meal List
+                        <div style={{ "float": "left" }}>
+                            <FontAwesomeIcon icon={faPizzaSlice} /> Order Meals
                         </div>
                         <div style={{ "float": "right" }}>
                             <InputGroup size="sm">
                                 <FormControl placeHolder="Search By Ingredient" name="search" value={search} className={"info-border bg-dark text-white"}
-                                    onChange={this.searchChange}/>
+                                    onChange={this.searchChange} />
                                 <InputGroup.Append>
                                     <Button size="sm" variant="outline-info" type="button" onClick={this.searchData}>
-                                        <FontAwesomeIcon icon={faSearch}/>
+                                        <FontAwesomeIcon icon={faSearch} />
                                     </Button>
                                     <Button size="sm" variant="outline-danger" type="button" onClick={this.cancelSearch}>
                                         <FontAwesomeIcon icon={faTimes} />
@@ -171,8 +216,8 @@ export default class MealList extends Component {
                                     <th>Ingredients</th>
                                     <th>Thumbnail</th>
                                     <th>Price ($)</th>
-                                    <th>Edit Meal</th>
-                                    <th>Meal Contents Editable?</th>
+                                    <th>Select Meal</th>
+                                    <th>Quantity</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -182,39 +227,41 @@ export default class MealList extends Component {
                                         <tr key={meal.id}>
                                             <td>{meal.id}</td>
                                             <td>{meal.title}</td>
-                                                <td>
-                                                    <Nav className="ml-auto" navbar>
-                                                        <Button variant="link" size="sm">
-                                                            <NavItem>
-                                                                Link
+                                            <td>
+                                                <Nav className="ml-auto" navbar>
+                                                    <Button variant="link" size="sm">
+                                                        <NavItem>
+                                                            Link
                                                                 <NavLink href={meal.href}></NavLink>
-                                                            </NavItem>
-                                                        </Button>
-                                                    </Nav>
-                                                </td>
-                                                <td>
+                                                        </NavItem>
+                                                    </Button>
+                                                </Nav>
+                                            </td>
+                                            <td>
                                                 {meal.ingredients}
-                                                </td>
-                                                <td>
+                                            </td>
+                                            <td>
                                                 <Image src={meal.thumbnail} roundedCircle width="76" height="76" />
-                                                </td>
-                                                <td>
+                                            </td>
+                                            <td>
                                                 {meal.price}
-                                                </td>
-                                                <td>
-                                                    <ButtonGroup>
-                                                    <Link to={"edit/" + meal.id} className="btn btn-warning" ><FontAwesomeIcon icon={faEdit} /></Link>{' '}
-                                                        <Button variant="danger" onClick={this.deleteMeal.bind(this, meal.id)}>
-                                                            <FontAwesomeIcon icon={faTrash} />
-                                                        </Button>
-                                                    </ButtonGroup>
-                                                </td>
-                                                <td align="center">
-                                                <b>{meal.isSuggested.includes("true") ? <FontAwesomeIcon icon={faEquals} /> : <FontAwesomeIcon icon={faNotEqual} /> }</b>
-                                                </td>
-                                            </tr>
-                                            ))
-                                    }
+                                            </td>
+                                            <td>
+                                                <ButtonGroup>
+                                                    <Button type="button" variant="outline-info"
+                                                        onClick={() => this.addMealToOrder(meal)}>
+                                                        <FontAwesomeIcon icon={faClipboardCheck} /> Add
+                                                    </Button>
+                                                    <Button type="button" variant="outline-info"
+                                                        onClick={() => this.removeMealToOrder(meal)}>
+                                                        <FontAwesomeIcon icon={faBurn} /> Remove
+                                                    </Button>
+                                                </ButtonGroup>
+                                            </td>
+                                            <td>{meal.quantity}</td>
+                                        </tr>
+                                    ))
+                                }
                             </tbody>
                         </Table>
                     </Card.Body>
@@ -249,9 +296,29 @@ export default class MealList extends Component {
                             </InputGroup>
                         </div>
                     </Card.Footer>
-                    </Card>
-                </div>
-            );
+                </Card>
+                <Card className={"border border-dark bg-dark text-white"}>
+                    <Card.Header>
+                        <div style={{ "float": "left" }}>
+                            Total: $ {this.state.total}
+                        </div>
+                    </Card.Header>
+                    <Card.Footer>
+                        <div style={{ "float": "left" }}>
+                            <Button type="button" variant="outline-danger"
+                                onClick={() => this.resetOrder()}>
+                                <FontAwesomeIcon icon={faBurn} /> Reset
+                            </Button>
+                        </div>
+                        <div style={{ "float": "right" }}>
+                            <Button type="button" variant="outline-info">
+                                <FontAwesomeIcon icon={faShoppingCart} /> Go to Checkout
+                            </Button>
+                        </div>
+                    </Card.Footer>
+                </Card>
+            </div>
+        );
     }
-
+    // GO TO CHECKOUT NEEDS TO BE IMPLEMENTED
 }

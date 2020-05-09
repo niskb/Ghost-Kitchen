@@ -26,4 +26,8 @@ public class RecipePuppyBag implements Serializable {
         }
     }
 
+    public int getNElems() {
+        return nElems;
+    }
+
 }

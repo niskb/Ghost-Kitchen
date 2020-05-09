@@ -26,4 +26,8 @@ public class UserBag implements Serializable {
         }
     }
 
+    public int getNElems() {
+        return nElems;
+    }
+
 }

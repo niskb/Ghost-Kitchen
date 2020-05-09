@@ -11,6 +11,7 @@ export default function NavigationBar() {
                 <Link to="add" className="nav-link">Add A Meal Suggestion</Link>
                 <Link to="list" className="nav-link">Meal List</Link>
                 <Link to="users" className="nav-link">User List</Link>
+                <Link to="order" className="nav-link">Order Meals</Link>
             </Nav>
         </Navbar>
         );
