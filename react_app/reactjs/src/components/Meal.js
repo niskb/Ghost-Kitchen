@@ -50,6 +50,7 @@ export default class Meal extends Component {
 
     resetMeal = () => {
         this.setState(() => this.initialState);
+        return this.props.history.push("/add");
     };
 
     updateMeal = event => {

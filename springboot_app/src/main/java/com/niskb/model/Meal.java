@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Meal implements Serializable {
 
     private Long id;
-    private String title;
+    private String title = "";
     private String href = "";
     private String ingredients = "";
     private String thumbnail = "";

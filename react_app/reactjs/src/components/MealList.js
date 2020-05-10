@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Card, Table, Nav, NavItem, NavLink, Image, Button, ButtonGroup, InputGroup, FormControl } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faList, faEdit, faTrash, faFastBackward, faStepBackward, faStepForward, faFastForward, faSearch, faTimes, faEquals, faNotEqual } from '@fortawesome/free-solid-svg-icons'
+import { faList, faEdit, faTrash, faFastBackward, faStepBackward, faStepForward, faFastForward, faSearch, faTimes, faEquals, faNotEqual, faLink } from '@fortawesome/free-solid-svg-icons'
 import MyToast from './MyToast';
 import './Style.css';
 import axios from 'axios';
@@ -182,38 +182,35 @@ export default class MealList extends Component {
                                         <tr key={meal.id}>
                                             <td>{meal.id}</td>
                                             <td>{meal.title}</td>
-                                                <td>
-                                                    <Nav className="ml-auto" navbar>
-                                                        <Button variant="link" size="sm">
-                                                            <NavItem>
-                                                                Link
-                                                                <NavLink href={meal.href}></NavLink>
-                                                            </NavItem>
-                                                        </Button>
-                                                    </Nav>
-                                                </td>
-                                                <td>
-                                                {meal.ingredients}
-                                                </td>
-                                                <td>
-                                                <Image src={meal.thumbnail} roundedCircle width="76" height="76" />
-                                                </td>
-                                                <td>
-                                                {meal.price}
-                                                </td>
-                                                <td>
-                                                    <ButtonGroup>
-                                                    <Link to={"edit/" + meal.id} className="btn btn-warning" ><FontAwesomeIcon icon={faEdit} /></Link>{' '}
-                                                        <Button variant="danger" onClick={this.deleteMeal.bind(this, meal.id)}>
-                                                            <FontAwesomeIcon icon={faTrash} />
-                                                        </Button>
-                                                    </ButtonGroup>
-                                                </td>
-                                                <td align="center">
-                                                <b>{meal.isSuggested.includes("true") ? <FontAwesomeIcon icon={faEquals} /> : <FontAwesomeIcon icon={faNotEqual} /> }</b>
-                                                </td>
-                                            </tr>
-                                            ))
+                                            <td>
+                                                <Nav className="ml-auto" navbar>
+                                                    <Button variant="link" size="sm">
+                                                        <NavItem><NavLink href={meal.href}><FontAwesomeIcon icon={faLink} /> External Link</NavLink></NavItem>
+                                                </Button>
+                                                </Nav>
+                                            </td>
+                                            <td>
+                                            {meal.ingredients}
+                                            </td>
+                                            <td>
+                                            <Image src={meal.thumbnail} thumbnail width="76" height="76" />
+                                            </td>
+                                            <td>
+                                            {meal.price}
+                                            </td>
+                                            <td>
+                                                <ButtonGroup>
+                                                <Link to={"edit/" + meal.id} className="btn btn-warning" ><FontAwesomeIcon icon={faEdit} /></Link>{' '}
+                                                    <Button variant="danger" onClick={this.deleteMeal.bind(this, meal.id)}>
+                                                        <FontAwesomeIcon icon={faTrash} />
+                                                    </Button>
+                                                </ButtonGroup>
+                                            </td>
+                                            <td align="center">
+                                            <b>{meal.isSuggested.includes("true") ? <FontAwesomeIcon icon={faEquals} /> : <FontAwesomeIcon icon={faNotEqual} /> }</b>
+                                            </td>
+                                        </tr>
+                                        ))
                                     }
                             </tbody>
                         </Table>

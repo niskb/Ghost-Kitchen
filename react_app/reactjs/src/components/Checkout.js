@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Card, Table, Nav, NavItem, NavLink, Image, Button, ButtonGroup, InputGroup, FormControl, Form, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFastBackward, faStepBackward, faStepForward, faFastForward, faClipboardCheck, faShoppingCart, faBurn, faDollarSign } from '@fortawesome/free-solid-svg-icons'
+import { faFastBackward, faStepBackward, faStepForward, faFastForward, faClipboardCheck, faShoppingCart, faBurn, faDollarSign, faLink, faPizzaSlice } from '@fortawesome/free-solid-svg-icons'
 import MyToast from './MyToast';
 import './Style.css';
 import axios from 'axios';
@@ -163,7 +163,7 @@ export default class Checkout extends Component {
             };
             axios.put("http://localhost:8080/rest/meals", changedMeal);
         }
-        this.mealOrder();
+        window.location.reload();
     };
 
     formNameChange = event => {
@@ -190,6 +190,27 @@ export default class Checkout extends Component {
         });
     };
 
+    makePayment = () => {
+        if (!(this.state.name.length === 0 || this.state.email.length === 0 || this.state.address.length === 0 || this.state.phoneNumber.length === 0)) {
+            var mealsStringVar = "";
+            for (var i = 0; i < this.state.meals.length; i++) {
+                mealsStringVar += "\nMeal [Id: " + this.state.meals[i].id + "; Title: " + this.state.meals[i].title + "; Price: $" + this.state.meals[i].price + "; Quantity: " + this.state.meals[i].quantity + "]"
+            }
+            const history = {
+                meals: mealsStringVar,
+                total: this.state.total,
+                name: this.state.name,
+                email: this.state.email,
+                address: this.state.address,
+                phoneNumber: this.state.phoneNumber
+            };
+            axios.post("http://localhost:8080/rest/history", history);
+            this.resetOrder();
+        } else {
+            alert("Please fill out the needed information, or your order will not be sent!");
+        }
+    };
+
     render() {
         const { meals, currentPage, mealsPerPage } = this.state
         const lastIndex = currentPage * mealsPerPage;
@@ -206,6 +227,11 @@ export default class Checkout extends Component {
                     <Card.Header>
                         <div style={{ "float": "left" }}>
                             <FontAwesomeIcon icon={faShoppingCart} /> Checkout
+                        </div>
+                        <div style={{ "float": "right" }}>
+                            <Button size="sm" variant="outline-light" type="button" onClick={() => this.mealOrder()}>
+                                <FontAwesomeIcon icon={faPizzaSlice} /> Back to Order Meals
+                            </Button>    
                         </div>
                     </Card.Header>
                     <Card.Body>
@@ -232,10 +258,7 @@ export default class Checkout extends Component {
                                             <td>
                                                 <Nav className="ml-auto" navbar>
                                                     <Button variant="link" size="sm">
-                                                        <NavItem>
-                                                            Link
-                                                                <NavLink href={meal.href}></NavLink>
-                                                        </NavItem>
+                                                        <NavItem><NavLink href={meal.href}><FontAwesomeIcon icon={faLink} /> External Link</NavLink></NavItem>
                                                     </Button>
                                                 </Nav>
                                             </td>
@@ -243,18 +266,18 @@ export default class Checkout extends Component {
                                                 {meal.ingredients}
                                             </td>
                                             <td>
-                                                <Image src={meal.thumbnail} roundedCircle width="76" height="76" />
+                                                <Image src={meal.thumbnail} thumbnail width="76" height="76" />
                                             </td>
                                             <td>
                                                 {meal.price}
                                             </td>
                                             <td>
                                                 <ButtonGroup>
-                                                    <Button type="button" variant="outline-info"
+                                                    <Button type="button" variant="outline-success"
                                                         onClick={() => this.addMealToOrder(meal)}>
                                                         <FontAwesomeIcon icon={faClipboardCheck} /> Add
                                                     </Button>
-                                                    <Button type="button" variant="outline-info"
+                                                    <Button type="button" variant="outline-danger"
                                                         onClick={() => this.removeMealToOrder(meal)}>
                                                         <FontAwesomeIcon icon={faBurn} /> Remove
                                                     </Button>
@@ -302,7 +325,7 @@ export default class Checkout extends Component {
                 <Card className={"border border-dark bg-dark text-white"}>
                     <Card.Footer>
                         <div style={{ "float": "left" }}>
-                            Total: $ {this.state.total}
+                            Total: ${this.state.total}
                         </div>
                     </Card.Footer>
                     <Card.Footer>
@@ -311,6 +334,9 @@ export default class Checkout extends Component {
                         </div>
                         <div style={{ "float": "left" }}>
                             We will contact you back "SOON" to ensure that you're not pranking us.
+                        </div>
+                        <div style={{ "float": "left" }}>
+                            We will be needing your credit/debit card number as "SOON" as we get back to you.
                         </div>
                     </Card.Footer>
                     <Form>
@@ -349,7 +375,8 @@ export default class Checkout extends Component {
                             </Button>
                         </div>
                         <div style={{ "float": "right" }}>
-                            <Button type="button" variant="outline-info">
+                            <Button type="button" variant="outline-warning"
+                                onClick={() => this.makePayment()}>
                                 <FontAwesomeIcon icon={faDollarSign} /> Make Payment
                             </Button>
                         </div>
@@ -358,5 +385,4 @@ export default class Checkout extends Component {
             </div>
         );
     }
-    //MAKE PAYMENT BUTTON DO SOMETHING
 }

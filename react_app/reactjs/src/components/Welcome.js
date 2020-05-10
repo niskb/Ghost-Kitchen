@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Jumbotron } from 'react-bootstrap';
+import { Jumbotron, Image } from 'react-bootstrap';
 import Footer from './Footer';
 
 export default class Welcome extends Component {
@@ -14,6 +14,11 @@ export default class Welcome extends Component {
                         <footer className="blockquote-footer">Brian Niski</footer>
                     </blockquote>
                 </Jumbotron>
+                <td colSpan="3">
+                    <td><Image src="https://cdn.discordapp.com/attachments/190278775202775040/708826641849253918/SNICKER_DOODLE.png" width="370" height="370" /></td>
+                    <td><Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgNZ0B0oxAKMmM3cttlOl2Kg7jvIR0cf29sHVwXbqmqZJd-cX4yw&s" roundedCircle width="370" height="370" alt="brand" /></td>
+                    <td><Image src="https://cdn.discordapp.com/attachments/190278775202775040/708826641849253918/SNICKER_DOODLE.png" width="370" height="370" /></td>
+                </td>
                 <Footer></Footer>
             </div>
         );

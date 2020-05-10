@@ -14,7 +14,7 @@ import java.util.Map;
 @Service
 public class MealServiceImpl implements MealService {
 
-    private Long mealId = 1L;
+    private Long mealId = 0L;
     private Map<Long, Meal> mealMap = new HashMap<Long, Meal>();
 
     {
@@ -26,7 +26,7 @@ public class MealServiceImpl implements MealService {
             meal.setIngredients(recipeBag.getRecipe(i).getIngredients());
             meal.setThumbnail(recipeBag.getRecipe(i).getThumbnail());
             meal.setPrice(recipeBag.getRecipe(i).getPrice());
-            meal.setId(mealId++);
+            meal.setId(++mealId);
             meal.setIsSuggested("false");
             meal.setIsSelected("false");
             meal.setQuantity(0);

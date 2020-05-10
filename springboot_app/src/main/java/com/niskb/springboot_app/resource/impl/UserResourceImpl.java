@@ -1,6 +1,5 @@
 package com.niskb.springboot_app.resource.impl;
 
-import com.niskb.model.Meal;
 import com.niskb.model.User;
 import com.niskb.springboot_app.resource.Resource;
 import com.niskb.springboot_app.service.UserService;

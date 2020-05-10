@@ -4,7 +4,7 @@ import { Card, Table, Nav, NavItem, NavLink, Image, Button, ButtonGroup, InputGr
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPizzaSlice, faFastBackward, faStepBackward, faStepForward, faFastForward, faSearch, faTimes, faClipboardCheck, faShoppingCart, faBurn } from '@fortawesome/free-solid-svg-icons'
+import { faPizzaSlice, faFastBackward, faStepBackward, faStepForward, faFastForward, faSearch, faTimes, faClipboardCheck, faShoppingCart, faBurn, faLink } from '@fortawesome/free-solid-svg-icons'
 import MyToast from './MyToast';
 import './Style.css';
 import axios from 'axios';
@@ -232,10 +232,7 @@ export default class MealOrder extends Component {
                                             <td>
                                                 <Nav className="ml-auto" navbar>
                                                     <Button variant="link" size="sm">
-                                                        <NavItem>
-                                                            Link
-                                                                <NavLink href={meal.href}></NavLink>
-                                                        </NavItem>
+                                                        <NavItem><NavLink href={meal.href}><FontAwesomeIcon icon={faLink} /> External Link</NavLink></NavItem>
                                                     </Button>
                                                 </Nav>
                                             </td>
@@ -243,18 +240,18 @@ export default class MealOrder extends Component {
                                                 {meal.ingredients}
                                             </td>
                                             <td>
-                                                <Image src={meal.thumbnail} roundedCircle width="76" height="76" />
+                                                <Image src={meal.thumbnail} thumbnail width="76" height="76" />
                                             </td>
                                             <td>
                                                 {meal.price}
                                             </td>
                                             <td>
                                                 <ButtonGroup>
-                                                    <Button type="button" variant="outline-info"
+                                                    <Button type="button" variant="outline-success"
                                                         onClick={() => this.addMealToOrder(meal)}>
                                                         <FontAwesomeIcon icon={faClipboardCheck} /> Add
                                                     </Button>
-                                                    <Button type="button" variant="outline-info"
+                                                    <Button type="button" variant="outline-danger"
                                                         onClick={() => this.removeMealToOrder(meal)}>
                                                         <FontAwesomeIcon icon={faBurn} /> Remove
                                                     </Button>
@@ -302,7 +299,7 @@ export default class MealOrder extends Component {
                 <Card className={"border border-dark bg-dark text-white"}>
                     <Card.Header>
                         <div style={{ "float": "left" }}>
-                            Total: $ {this.state.total}
+                            Total: ${this.state.total}
                         </div>
                     </Card.Header>
                     <Card.Footer>
@@ -313,7 +310,7 @@ export default class MealOrder extends Component {
                             </Button>
                         </div>
                         <div style={{ "float": "right" }}>
-                            <Button type="button" variant="outline-info">
+                            <Button type="button" variant="outline-warning">
                                 <Link to="checkout" className="nav-link">
                                     <FontAwesomeIcon icon={faShoppingCart} /> Go to Checkout
                                 </Link>

@@ -9,7 +9,7 @@ import com.niskb.model.RecipePuppyBag;
 public class APIDownloadDemo {
 
     public static void main(String[] args) {
-        RecipePuppyBag recipePuppyBag = Downloader.downloadRecipeData();
+        RecipePuppyBag recipePuppyBag = Downloader.downloadRecipeData(1000);
         Saver.saveRecipes(recipePuppyBag);
         recipePuppyBag = Loader.loadRecipes();
         for(int i = 0; i < 1000; i++) {
