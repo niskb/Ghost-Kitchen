@@ -95,24 +95,24 @@ export default class Meal extends Component {
     submitMeal = event => {
         event.preventDefault();
         const meal = {
-                title: this.state.title,
-                href: this.state.href,
-                ingredients: this.state.ingredients,
-                thumbnail: this.state.thumbnail,
-                price: this.state.price,
-                isSuggested: "true",
-                isSelected: "false",
-                quantity: 0
-            };
+            title: this.state.title,
+            href: this.state.href,
+            ingredients: this.state.ingredients,
+            thumbnail: this.state.thumbnail,
+            price: this.state.price,
+            isSuggested: "true",
+            isSelected: "false",
+            quantity: 0
+        };
 
-            const headers = new Headers();
-            headers.append('Content-Type', 'application/json');
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
 
-            fetch("http://localhost:8080/rest/meals", {
-                method: 'POST',
-                body: JSON.stringify(meal),
-                headers
-            })
+        fetch("http://localhost:8080/rest/meals", {
+            method: 'POST',
+            body: JSON.stringify(meal),
+            headers
+        })
             .then(response => response.json())
                 .then((meal) => {
                     if (meal) {
@@ -142,42 +142,42 @@ export default class Meal extends Component {
                 <div style={{"display":this.state.show ? "block" : "none"}}>
                     <MyToast show={this.state.show} message={this.state.method === "put" ? "Meal Updated Successfully." : "Meal Saved Successfully."} type={"success"}/>
                 </div>
-                    <Card className={"border border-dark bg-dark text-white"}>
-                    <Card.Header><FontAwesomeIcon icon={this.state.id ? faEdit : faPlusSquare } />{this.state.id ? " Update Meal" : " Suggest New Meal"}</Card.Header>
-                    <Form onReset={this.resetMeal} onSubmit={this.state.id ? this.updateMeal : this.submitMeal} id="mealFormId">
-                            <Card.Body>
-                                <Form.Row>
-                                    <Form.Group as={Col} controlId="formGridTitle">
-                                        <Form.Label>Title</Form.Label>
-                                    <Form.Control required autoComplete="off" type="text" name="title" value={title} onChange={this.mealChange} className={"bg-dark text-white"} placeholder="Enter Meal Title" />
-                                    </Form.Group>
+                <Card className={"border border-dark bg-dark text-white"}>
+                <Card.Header><FontAwesomeIcon icon={this.state.id ? faEdit : faPlusSquare } />{this.state.id ? " Update Meal" : " Suggest New Meal"}</Card.Header>
+                <Form onReset={this.resetMeal} onSubmit={this.state.id ? this.updateMeal : this.submitMeal} id="mealFormId">
+                    <Card.Body>
+                        <Form.Row>
+                            <Form.Group as={Col} controlId="formGridTitle">
+                                <Form.Label>Title</Form.Label>
+                                <Form.Control required autoComplete="off" type="text" name="title" value={title} onChange={this.mealChange} className={"bg-dark text-white"} placeholder="Enter Meal Title" />
+                            </Form.Group>
 
-                                    <Form.Group as={Col} controlId="formGridHREF">
-                                        <Form.Label>HREF</Form.Label>
-                                    <Form.Control required autoComplete="off" type="text" name="href" value={href} onChange={this.mealChange} className={"bg-dark text-white"} placeholder="Enter Meal HREF" />
-                                    </Form.Group>
-                                </Form.Row>
+                            <Form.Group as={Col} controlId="formGridHREF">
+                                <Form.Label>HREF</Form.Label>
+                                <Form.Control required autoComplete="off" type="text" name="href" value={href} onChange={this.mealChange} className={"bg-dark text-white"} placeholder="Enter Meal HREF" />
+                            </Form.Group>
+                        </Form.Row>
 
-                                <Form.Row>
-                                    <Form.Group as={Col} controlId="formGridPrice">
-                                        <Form.Label>Price</Form.Label>
-                                    <Form.Control required autoComplete="off" type="text" name="price" value={price} onChange={this.mealChange} className={"bg-dark text-white"} placeholder="Enter Meal Price $" />
-                                    </Form.Group>
+                        <Form.Row>
+                            <Form.Group as={Col} controlId="formGridPrice">
+                                <Form.Label>Price</Form.Label>
+                                <Form.Control required autoComplete="off" type="text" name="price" value={price} onChange={this.mealChange} className={"bg-dark text-white"} placeholder="Enter Meal Price $" />
+                            </Form.Group>
 
-                                    <Form.Group as={Col} controlId="formGridThumbnail">
-                                        <Form.Label>Thumbnail URL</Form.Label>
-                                    <Form.Control required autoComplete="off" type="text" name="thumbnail" value={thumbnail} onChange={this.mealChange} className={"bg-dark text-white"} placeholder="Enter Meal Thumbnail" />
-                                    </Form.Group>
-                                </Form.Row>
+                            <Form.Group as={Col} controlId="formGridThumbnail">
+                                <Form.Label>Thumbnail URL</Form.Label>
+                                <Form.Control required autoComplete="off" type="text" name="thumbnail" value={thumbnail} onChange={this.mealChange} className={"bg-dark text-white"} placeholder="Enter Meal Thumbnail" />
+                            </Form.Group>
+                        </Form.Row>
 
-                                <Form.Row>
-                                    <Form.Group as={Col} controlId="formGridIngredients">
-                                        <Form.Label>Ingredients</Form.Label>
-                                    <Form.Control required autoComplete="off" type="text" name="ingredients" value={ingredients} onChange={this.mealChange} className={"bg-dark text-white"} placeholder="Enter Meal Ingredients" />
-                                    </Form.Group>
-                                </Form.Row>
-                            </Card.Body>
-                            <Card.Footer style={{ "textAlign": "right" }}>
+                        <Form.Row>
+                            <Form.Group as={Col} controlId="formGridIngredients">
+                                <Form.Label>Ingredients</Form.Label>
+                                <Form.Control required autoComplete="off" type="text" name="ingredients" value={ingredients} onChange={this.mealChange} className={"bg-dark text-white"} placeholder="Enter Meal Ingredients" />
+                            </Form.Group>
+                        </Form.Row>
+                    </Card.Body>
+                        <Card.Footer style={{ "textAlign": "right" }}>
                             <Button size="sm" variant="success" type="submit"><FontAwesomeIcon icon={faSave} />{this.state.id ? " Update" : " Save"}
                                 </Button>{' '}
                             <Button size="sm" variant="info" type="reset">
@@ -186,10 +186,10 @@ export default class Meal extends Component {
                             <Button size="sm" variant="info" type="button" onClick={this.mealList.bind()}>
                                 <FontAwesomeIcon icon={faList} /> Meal List
                                 </Button>
-                            </Card.Footer>
-                        </Form>
-                    </Card>
-                </div>
+                        </Card.Footer>
+                    </Form>
+                </Card>
+            </div>
         );
     }
 }

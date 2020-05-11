@@ -36,7 +36,7 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public History updateHistory(History history) {
         historyId = history.getId();
-        if(historyMap.get(historyId) != null) {
+        if (historyMap.get(historyId) != null) {
             System.out.println("UPDATING HISTORY, History Id: " + history.getId());
             historyMap.put(historyId, history);
             return historyMap.get(historyId);
@@ -46,7 +46,7 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public History deleteHistoryById(Long id) {
-        if(historyMap.get(id) != null) {
+        if (historyMap.get(id) != null) {
             System.out.println("DELETING HISTORY, History Id: " + id);
             historyMap.remove(id);
         }

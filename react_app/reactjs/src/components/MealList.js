@@ -186,28 +186,22 @@ export default class MealList extends Component {
                                                 <Nav className="ml-auto" navbar>
                                                     <Button variant="link" size="sm">
                                                         <NavItem><NavLink href={meal.href}><FontAwesomeIcon icon={faLink} /> External Link</NavLink></NavItem>
-                                                </Button>
+                                                    </Button>
                                                 </Nav>
                                             </td>
-                                            <td>
-                                            {meal.ingredients}
-                                            </td>
-                                            <td>
-                                            <Image src={meal.thumbnail} thumbnail width="76" height="76" />
-                                            </td>
-                                            <td>
-                                            {meal.price}
-                                            </td>
+                                            <td>{meal.ingredients}</td>
+                                            <td><Image src={meal.thumbnail} thumbnail width="76" height="76" /></td>
+                                            <td>{meal.price}</td>
                                             <td>
                                                 <ButtonGroup>
-                                                <Link to={"edit/" + meal.id} className="btn btn-warning" ><FontAwesomeIcon icon={faEdit} /></Link>{' '}
+                                                    <Link to={"edit/" + meal.id} className="btn btn-warning" ><FontAwesomeIcon icon={faEdit} /></Link>{' '}
                                                     <Button variant="danger" onClick={this.deleteMeal.bind(this, meal.id)}>
                                                         <FontAwesomeIcon icon={faTrash} />
                                                     </Button>
                                                 </ButtonGroup>
                                             </td>
                                             <td align="center">
-                                            <b>{meal.isSuggested.includes("true") ? <FontAwesomeIcon icon={faEquals} /> : <FontAwesomeIcon icon={faNotEqual} /> }</b>
+                                                <b>{meal.isSuggested.includes("true") ? <FontAwesomeIcon icon={faEquals} /> : <FontAwesomeIcon icon={faNotEqual} /> }</b>
                                             </td>
                                         </tr>
                                         ))
@@ -246,9 +240,9 @@ export default class MealList extends Component {
                             </InputGroup>
                         </div>
                     </Card.Footer>
-                    </Card>
-                </div>
-            );
+                </Card>
+            </div>
+        );
     }
 
 }

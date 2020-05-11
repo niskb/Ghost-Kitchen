@@ -21,7 +21,7 @@ public class UserBag implements Serializable {
     }
 
     public void displayUsersInConsole() {
-        for(int i = 0; i < nElems; i++) {
+        for (int i = 0; i < nElems; i++) {
             System.out.println(users[i]);
         }
     }

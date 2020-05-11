@@ -76,12 +76,20 @@ public class Meal implements Serializable {
         return this.isSuggested = isSuggested;
     }
 
-    public String getIsSelected() { return this.isSelected; }
+    public String getIsSelected() {
+        return this.isSelected;
+    }
 
-    public String setIsSelected(String isSelected) { return this.isSelected = isSelected; }
+    public String setIsSelected(String isSelected) {
+        return this.isSelected = isSelected;
+    }
 
-    public int getQuantity() { return this.quantity; }
+    public int getQuantity() {
+        return this.quantity;
+    }
 
-    public int setQuantity(int quantity) { return this.quantity = quantity; }
+    public int setQuantity(int quantity) {
+        return this.quantity = quantity;
+    }
 
 }

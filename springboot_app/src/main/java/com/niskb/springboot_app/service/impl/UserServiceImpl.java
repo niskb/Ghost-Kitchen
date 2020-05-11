@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     private Map<Long, User> userMap = new HashMap<Long, User>();
 
     {
-        for(int i = 0; i < 75; i++) {
+        for (int i = 0; i < 75; i++) {
             User user = new User();
             user.setId(userId++);
             user.setName("Default");
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(User user) {
         userId = user.getId();
-        if(userMap.get(userId) != null) {
+        if (userMap.get(userId) != null) {
             System.out.println("UPDATING USER, User Id: " + user.getId());
             userMap.put(userId, user);
             return userMap.get(userId);
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User deleteUserById(Long id) {
-        if(userMap.get(id) != null) {
+        if (userMap.get(id) != null) {
             System.out.println("DELETING USER, User Id: " + id);
             userMap.remove(id);
         }

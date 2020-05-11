@@ -20,7 +20,7 @@ public class HistoryRESTDownloadDemo {
         HistoryBag historyBag = Downloader.downloadHistoryData(size);
         Saver.saveHistories(historyBag);
         historyBag = Loader.loadHistory();
-        for(int i = 0; i < historyBag.getNElems(); i++) {
+        for (int i = 0; i < historyBag.getNElems(); i++) {
             History history = new History();
             history.setId(historyBag.getHistory(i).getId());
             history.setMeals(historyBag.getHistory(i).getMeals());

@@ -19,7 +19,7 @@ public class MealServiceImpl implements MealService {
 
     {
         RecipePuppyBag recipeBag = Loader.loadRecipes();
-        for(int i = 0; i < recipeBag.getNElems(); i++) {
+        for (int i = 0; i < recipeBag.getNElems(); i++) {
             Meal meal = new Meal();
             meal.setTitle(recipeBag.getRecipe(i).getTitle());
             meal.setHref(recipeBag.getRecipe(i).getHref());
@@ -57,7 +57,7 @@ public class MealServiceImpl implements MealService {
     @Override
     public Meal updateMeal(Meal meal) {
         mealId = meal.getId();
-        if(mealMap.get(mealId) != null) {
+        if (mealMap.get(mealId) != null) {
             System.out.println("UPDATING MEAL, Meal Id: " + meal.getId());
             mealMap.put(mealId, meal);
             return mealMap.get(mealId);
@@ -67,7 +67,7 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public Meal deleteMealById(Long id) {
-        if(mealMap.get(id) != null) {
+        if (mealMap.get(id) != null) {
             System.out.println("DELETING MEAL, Meal Id: " + id);
             mealMap.remove(id);
         }

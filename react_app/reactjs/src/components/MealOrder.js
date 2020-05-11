@@ -236,15 +236,9 @@ export default class MealOrder extends Component {
                                                     </Button>
                                                 </Nav>
                                             </td>
-                                            <td>
-                                                {meal.ingredients}
-                                            </td>
-                                            <td>
-                                                <Image src={meal.thumbnail} thumbnail width="76" height="76" />
-                                            </td>
-                                            <td>
-                                                {meal.price}
-                                            </td>
+                                            <td>{meal.ingredients}</td>
+                                            <td><Image src={meal.thumbnail} thumbnail width="76" height="76" /></td>
+                                            <td>{meal.price}</td>
                                             <td>
                                                 <ButtonGroup>
                                                     <Button type="button" variant="outline-success"

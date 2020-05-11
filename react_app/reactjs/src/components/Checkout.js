@@ -252,25 +252,19 @@ export default class Checkout extends Component {
                                 {this.state.meals.length === 0 ?
                                     <td colSpan="8">{this.state.meals.length} Meals in Order</td> :
                                     currentMeals.map((meal) => (
-                                        <tr key={meal.id}>
-                                            <td>{meal.id}</td>
-                                            <td>{meal.title}</td>
-                                            <td>
-                                                <Nav className="ml-auto" navbar>
-                                                    <Button variant="link" size="sm">
-                                                        <NavItem><NavLink href={meal.href}><FontAwesomeIcon icon={faLink} /> External Link</NavLink></NavItem>
-                                                    </Button>
-                                                </Nav>
-                                            </td>
-                                            <td>
-                                                {meal.ingredients}
-                                            </td>
-                                            <td>
-                                                <Image src={meal.thumbnail} thumbnail width="76" height="76" />
-                                            </td>
-                                            <td>
-                                                {meal.price}
-                                            </td>
+                                    <tr key={meal.id}>
+                                        <td>{meal.id}</td>
+                                        <td>{meal.title}</td>
+                                        <td>
+                                            <Nav className="ml-auto" navbar>
+                                                <Button variant="link" size="sm">
+                                                    <NavItem><NavLink href={meal.href}><FontAwesomeIcon icon={faLink} /> External Link</NavLink></NavItem>
+                                                </Button>
+                                            </Nav>
+                                        </td>
+                                        <td>{meal.ingredients}</td>
+                                            <td><Image src={meal.thumbnail} thumbnail width="76" height="76" /></td>
+                                            <td>{meal.price}</td>
                                             <td>
                                                 <ButtonGroup>
                                                     <Button type="button" variant="outline-success"
@@ -284,7 +278,7 @@ export default class Checkout extends Component {
                                                 </ButtonGroup>
                                             </td>
                                             <td>{meal.quantity}</td>
-                                        </tr>
+                                    </tr>
                                     ))
                                 }
                             </tbody>

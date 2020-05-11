@@ -13,7 +13,7 @@ public class UserRESTDownloadDemo {
         UserBag userBag = Downloader.downloadUserData(75);
         Saver.saveUsers(userBag);
         userBag = Loader.loadUsers();
-        for(int i = 0; i < 75; i++) {
+        for (int i = 0; i < 75; i++) {
             User user = new User();
             user.setId(userBag.getUser(i).getId());
             user.setName(userBag.getUser(i).getName());

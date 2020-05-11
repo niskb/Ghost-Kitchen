@@ -14,7 +14,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/history")
-@CrossOrigin(origins="http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class HistoryResourceImpl implements Resource<History> {
 
     @Autowired

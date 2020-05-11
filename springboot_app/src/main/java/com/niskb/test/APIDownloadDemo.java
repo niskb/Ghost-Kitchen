@@ -12,7 +12,7 @@ public class APIDownloadDemo {
         RecipePuppyBag recipePuppyBag = Downloader.downloadRecipeData(1000);
         Saver.saveRecipes(recipePuppyBag);
         recipePuppyBag = Loader.loadRecipes();
-        for(int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1000; i++) {
             Meal meal = new Meal();
             meal.setTitle(recipePuppyBag.getRecipe(i).getTitle());
             meal.setHref(recipePuppyBag.getRecipe(i).getHref());

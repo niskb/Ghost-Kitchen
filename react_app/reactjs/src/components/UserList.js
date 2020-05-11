@@ -44,7 +44,7 @@ export default class UserList extends Component {
                                 console.log("Failed to send to REST Repository!");
                             }
                         });
-            }
+                }
             });
     }
 

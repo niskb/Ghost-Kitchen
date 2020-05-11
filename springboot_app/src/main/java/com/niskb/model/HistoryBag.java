@@ -21,7 +21,7 @@ public class HistoryBag implements Serializable {
     }
 
     public void displayHistoriesInConsole() {
-        for(int i = 0; i < nElems; i++) {
+        for (int i = 0; i < nElems; i++) {
             System.out.println(histories[i]);
         }
     }
