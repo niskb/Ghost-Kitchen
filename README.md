@@ -4,6 +4,10 @@ By Brian Niski for CSE 248
 Used Spring Boot, React with React Bootstrap
 Java, Javascript, HTML, CSS
 
+Database:
+RESTful Web Service
+H2, JPA
+
 Features:
 Uses API to get data.
 Data listing and filtering
